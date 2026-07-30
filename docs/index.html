@@ -74,7 +74,7 @@
   .legend .t { font-weight: 650; color: var(--ink); margin-bottom: 4px; }
   .legend .row { display: flex; align-items: center; gap: 7px; }
   .legend .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; opacity: 0.75; }
-  .legend .ln { width: 14px; height: 0; border-top: 2.5px solid #1a1a1a; flex: none; }
+  .legend .ln { width: 14px; height: 0; border-top: 2.5px dashed #f0b400; flex: none; }
   .legend .wl { width: 14px; height: 0; border-top: 2px dashed #1d5c33; flex: none; }
   .leaflet-tooltip { font: 12px system-ui, sans-serif; }
   .th-icon, .cabin-icon { background: none; border: none; }
@@ -112,10 +112,14 @@ const CONNECT_M = 150;   // ≤ this: segments count as touching
 const GAP_M = 1000;      // ≤ this: extend the route across a (shown) data gap
 
 const map = L.map("map", { zoomSnap: 0.5 }).setView([35.87, -105.65], 11);
-L.tileLayer("https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}", {
+const usgsBase = L.tileLayer("https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}", {
   maxZoom: 16,
   attribution: "USGS The National Map · Fires: NIFC, MTBS · Trails: USFS EDW · Elevation: AWS Terrain",
 }).addTo(map);
+const esriBase = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}", {
+  maxZoom: 16,
+  attribution: "Esri World Topo · Fires: NIFC, MTBS · Trails: USFS EDW · Elevation: AWS Terrain",
+});
 
 const fmt = n => n == null ? "—" : n.toLocaleString();
 const titleCase = s => (s || "").replace(/\w\S*/g, t => t[0] + t.slice(1).toLowerCase());
@@ -165,12 +169,12 @@ Promise.all([
   }).addTo(map);
 
   const wildLayer = L.geoJSON(wilderness, {
-    style: { color: "#1d5c33", weight: 2, dashArray: "6 4", fill: false },
+    style: { color: "#1d5c33", weight: 1.25, opacity: 0.5, dashArray: "6 4", fill: false },
     interactive: false,
-  }).addTo(map);
+  });   // off by default — toggle in the layer control
 
   // ---------- trails: hover tooltip, click = route builder ----------
-  const baseStyle = { color: "#1a1a1a", weight: 1.75, opacity: 0.9 };
+  const baseStyle = { color: "#f0b400", weight: 2.25, opacity: 1, dashArray: "5 4" };
   const searchStyle = { color: "#2a78d6", weight: 4.5, opacity: 1 };
   const routeStyle = { color: "#6d28d9", weight: 5, opacity: 1 };
   const candStyle = { color: "#6d28d9", weight: 3.5, opacity: 0.35 };  // attachable next segments
@@ -202,7 +206,7 @@ Promise.all([
       l.bindTooltip(`<b>${titleCase(p.trail_name) || "Unnamed"}</b> ${p.trail_no ?? ""}` +
         ` · ${(p.gis_miles || 0).toFixed(1)} mi` +
         (fl.length ? `<br>⚠ ${fl.join(", ")}` : ""), { sticky: true });
-      l.on("mouseover", () => { if (!inChain(i) && key !== searchSel) l.setStyle({ weight: 4 }); });
+      l.on("mouseover", () => { if (!inChain(i) && key !== searchSel) l.setStyle({ weight: 4.5 }); });
       l.on("mouseout", () => restyle(i));
       l.on("click", () => clickSeg(i));
       l.on("contextmenu", e => {
@@ -483,7 +487,7 @@ Promise.all([
     .bindTooltip("<b>The cabin</b><br>6 Mudge Rd", { direction: "top", offset: [0, -22] })
     .addTo(map);
 
-  L.control.layers(null, {
+  L.control.layers({ "USGS Topo": usgsBase, "Esri Topo (cleaner)": esriBase }, {
     "Burn areas": fireLayer, "Trails": trailLayer,
     "Trailheads": thLayer, "Wilderness boundary": wildLayer,
   }, { collapsed: true, position: "bottomleft" }).addTo(map);
@@ -493,8 +497,7 @@ Promise.all([
     const d = L.DomUtil.create("div", "legend panel");
     d.innerHTML = `<div class="t">Burned area, by decade</div>` +
       BINS.map(b => `<div class="row"><span class="sw" style="background:${b.color}"></span>${b.label}</div>`).join("") +
-      `<div class="row" style="margin-top:6px"><span class="ln"></span>USFS trail</div>
-       <div class="row"><span class="wl"></span>Wilderness boundary</div>`;
+      `<div class="row" style="margin-top:6px"><span class="ln"></span>USFS trail</div>`;
     return d;
   };
   legend.addTo(map);
