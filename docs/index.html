@@ -264,7 +264,10 @@ Promise.all([
   function clickSeg(i) {
     const pos = chain.findIndex(c => c.i === i);
     if (pos >= 0) {
-      chain = pos === 0 && chain.length > 1 ? chain.slice(1) : chain.slice(0, pos);
+      // click a selected END segment to pop it off; middle clicks do nothing
+      if (pos === 0) { chain.shift(); if (chain.length) chain[0].gapM = 0; }
+      else if (pos === chain.length - 1) chain.pop();
+      else return;
     } else if (!chain.length) {
       chain = [{ i, rev: false, gapM: 0 }];
     } else {
@@ -286,7 +289,7 @@ Promise.all([
           chain.unshift({ i, rev, gapM: 0 });
         }
       } else {
-        chain = [{ i, rev: false, gapM: 0 }];
+        return;   // disconnected — never wipe an in-progress route
       }
     }
     restyleAll();
@@ -347,7 +350,7 @@ Promise.all([
     d.id = "route-panel";
     d.innerHTML = `<div class="t">Route <button id="route-clear" title="Clear route">clear ×</button></div>
       <div id="route-stats"></div>
-      <div id="route-hint">Click a trail segment to start a route; connectable segments glow faint purple — click to extend. Click a selected segment to trim back. Right-click any trail for its AllTrails review history.</div>
+      <div id="route-hint">Click a trail segment to start a route; connectable segments glow faint purple — click to extend. Click an end segment to remove it; disconnected segments are ignored. Right-click any trail for its AllTrails review history.</div>
       <div id="route-segs"></div>`;
     L.DomEvent.disableClickPropagation(d);
     d.querySelector("#route-clear").onclick = () => { chain = []; restyleAll(); renderRoute(); };

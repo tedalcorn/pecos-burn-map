@@ -352,6 +352,23 @@ def main():
 
     fires = simplify_features(existing + gap_fill)
     fires.sort(key=lambda f: f["properties"]["year"] or 0)
+
+    # "Unknown" fires get a descriptive name: 'Unnamed ('74, southwest Pecos)'
+    wcx, wcy = geom.centroid.x, geom.centroid.y
+    seen_names = {}
+    for fe in fires:
+        p = fe["properties"]
+        if p["name"].lower() not in ("unknown", "unnamed", "noname", "unnamed fire"):
+            continue
+        c = shape(fe["geometry"]).centroid
+        ang = math.degrees(math.atan2(c.y - wcy, c.x - wcx)) % 360
+        octant = ["east", "northeast", "north", "northwest",
+                  "west", "southwest", "south", "southeast"][int(((ang + 22.5) % 360) // 45)]
+        yy = f"'{str(p['year'])[2:]}" if p.get("year") else "year unk."
+        base = f"Unnamed ({yy}, {octant} Pecos)"
+        n = seen_names.get(base, 0)
+        seen_names[base] = n + 1
+        p["name"] = base if n == 0 else f"Unnamed ({yy}, {octant} Pecos, {p.get('acres') or '?'} ac)"
     write_geojson("fires", fires)
 
     meta = {

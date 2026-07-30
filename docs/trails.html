@@ -14,7 +14,6 @@
   header {
     background: var(--surface); border-bottom: 1px solid var(--hairline);
     padding: 10px 16px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
-    position: sticky; top: 0; z-index: 5;
   }
   header h1 { font-size: 16px; font-weight: 650; }
   .tabs { display: flex; gap: 2px; margin-left: 8px; }
@@ -25,13 +24,13 @@
   main { max-width: 1080px; margin: 14px auto 40px; padding: 0 14px; }
   .note { font-size: 12px; color: var(--muted); margin: 0 0 8px 2px; }
   table { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--surface);
-    border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; font-size: 13px; }
+    border: 1px solid var(--hairline); font-size: 13px; }
   th, td { padding: 6px 9px; text-align: right; white-space: nowrap; }
   th:first-child, td:first-child { text-align: left; }
   thead th {
     font-size: 11px; font-weight: 600; color: var(--ink-2); cursor: pointer;
     border-bottom: 1px solid var(--hairline); background: var(--surface);
-    position: sticky; top: 43px; user-select: none;
+    position: sticky; top: 0; user-select: none;
   }
   thead th:hover { color: var(--ink); }
   thead th .arr { color: var(--muted); font-size: 9px; }
@@ -44,10 +43,9 @@
   .tno { color: var(--muted); font-size: 11px; }
   .volbar { display: inline-block; height: 9px; background: #2a78d6; border-radius: 2px;
     margin-right: 6px; vertical-align: baseline; opacity: 0.8; }
-  .up { color: #9c3810; }     /* deadfall rising = warm warning tone */
-  .down { color: #006300; }
-  .rup { color: #006300; }    /* rating rising = good */
-  .rdown { color: #9c3810; }
+  .tarr { font-size: 13px; }
+  .tgood { color: #006300; }
+  .tbad { color: #9c3810; }
   .flag { color: #9c3810; font-size: 11px; }
 </style>
 </head>
@@ -64,7 +62,8 @@
 <main>
   <p class="note">Click a column to sort · click a row to see the trail on the map ·
     review data from AllTrails (matched routes); “—” = no AllTrails coverage.
-    Deadfall = share of reviews mentioning it; trends compare the last 3 years to the 5 before.</p>
+    Deadfall = share of reviews mentioning it. Arrows show the trend vs the prior 5 years
+    (steeper = bigger move; hover for the number). Climb = net low-to-high elevation difference.</p>
   <table id="tbl">
     <thead><tr id="hdr"></tr></thead>
     <tbody id="body"></tbody>
@@ -127,15 +126,22 @@ Promise.all([
   });
 
   const maxVol = Math.max(1, ...rows.map(r => r.vol || 0));
+  // trend arrow: steeper glyph = bigger move; tooltip carries the number
+  const arrow = (v, mild, strong, goodUp) => {
+    if (v == null) return "";
+    const mag = Math.abs(v);
+    const g = mag < mild ? "→" : v > 0 ? (mag < strong ? "↗" : "↑") : (mag < strong ? "↘" : "↓");
+    const cls = mag < mild ? "dim" : (v > 0) === goodUp ? "tgood" : "tbad";
+    return ` <span class="${cls} tarr">${g}</span>`;
+  };
   const COLS = [
     { k: "name",   label: "Trail",            get: r => r.name.toLowerCase(), asc: true },
     { k: "miles",  label: "Miles",            get: r => r.miles },
-    { k: "elev",   label: "Elevation (ft)",   get: r => r.zmax },
+    { k: "gain",   label: "Climb (ft)",       get: r => r.zmax - r.zmin },
+    { k: "grade",  label: "Grade",            get: r => (r.zmax - r.zmin) * 3.28084 / (r.miles * 5280) },
     { k: "vol",    label: "Reviews (12 mo)",  get: r => r.vol ?? -1 },
     { k: "rating", label: "Rating",           get: r => r.rating ?? -1 },
-    { k: "rTrend", label: "Rating trend",     get: r => r.rTrend ?? -99 },
     { k: "df",     label: "Deadfall %",       get: r => r.df ?? -1 },
-    { k: "dfTrend", label: "Deadfall trend",  get: r => r.dfTrend ?? -99 },
   ];
   let sortK = "vol", sortAsc = false;
 
@@ -163,20 +169,21 @@ Promise.all([
       const flags = r.flags.length ? ` <span class="flag" title="flagged: ${r.flags.join(", ")}">⚠</span>` : "";
       const vol = r.vol == null ? `<span class="dim">—</span>` :
         `<span class="volbar" style="width:${Math.max(2, r.vol / maxVol * 60)}px"></span>${r.vol.toLocaleString()}`;
-      const rt = r.rTrend == null ? `<span class="dim">·</span>` :
-        `<span class="${r.rTrend >= 0.05 ? "rup" : r.rTrend <= -0.05 ? "rdown" : "dim"}">${r.rTrend >= 0 ? "+" : ""}${r.rTrend.toFixed(2)}</span>`;
+      const rArr = arrow(r.rTrend, 0.05, 0.15, true);
+      const rtTitle = r.rTrend == null ? "" : ` title="rating ${r.rTrend >= 0 ? "+" : ""}${r.rTrend.toFixed(2)} vs prior 5 yrs"`;
+      const dArr = arrow(r.dfTrend == null ? null : r.dfTrend * 100, 1, 3, false);
+      const dfTitle = r.dfTrend == null ? "" : ` title="deadfall ${r.dfTrend > 0 ? "+" : ""}${(r.dfTrend * 100).toFixed(1)}pp vs prior 5 yrs"`;
       const df = r.df == null ? `<span class="dim">—</span>` : (r.df * 100).toFixed(1) + "%";
-      const dt = r.dfTrend == null ? `<span class="dim">·</span>` :
-        `<span class="${r.dfTrend > 0.01 ? "up" : r.dfTrend < -0.01 ? "down" : "dim"}">${r.dfTrend > 0 ? "▲" : r.dfTrend < 0 ? "▼" : ""} ${(r.dfTrend * 100).toFixed(1)}pp</span>`;
+      const gainFt = Math.round((r.zmax - r.zmin) * 3.28084);
+      const grade = gainFt / (r.miles * 5280);
       return `<tr data-no="${r.no}" class="${r.no === hlNo ? "hl" : ""}">
         <td>${titleCase(r.name)} <span class="tno">${r.no}</span>${flags}</td>
         <td>${r.miles.toFixed(1)}</td>
-        <td class="dim">${fmtFt(r.zmin)}–${fmtFt(r.zmax)}</td>
+        <td>+${gainFt.toLocaleString()} <span class="dim">(${fmtFt(r.zmin)}–${fmtFt(r.zmax)})</span></td>
+        <td>${(grade * 100).toFixed(1)}%</td>
         <td>${vol}</td>
-        <td>${r.rating ?? '<span class="dim">—</span>'}</td>
-        <td>${rt}</td>
-        <td>${df}</td>
-        <td>${dt}</td>
+        <td${rtTitle}>${r.rating ?? '<span class="dim">—</span>'}${rArr}</td>
+        <td${dfTitle}>${df}${dArr}</td>
       </tr>`;
     }).join("");
     body.querySelectorAll("tr").forEach(tr =>
