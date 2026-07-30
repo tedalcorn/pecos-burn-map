@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pecos Wilderness — Trail Table</title>
+<style>
+  :root {
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --surface: #fcfcfb; --hairline: rgba(11,11,11,0.10);
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: #f9f9f7; }
+  header {
+    background: var(--surface); border-bottom: 1px solid var(--hairline);
+    padding: 10px 16px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    position: sticky; top: 0; z-index: 5;
+  }
+  header h1 { font-size: 16px; font-weight: 650; }
+  .tabs { display: flex; gap: 2px; margin-left: 8px; }
+  .tab { padding: 3px 10px; border-radius: 6px; font-size: 12.5px; color: var(--ink-2); text-decoration: none; }
+  .tab.on { background: rgba(11,11,11,0.07); color: var(--ink); font-weight: 600; }
+  .tab:hover { background: rgba(11,11,11,0.05); }
+  header .sub { font-size: 12.5px; color: var(--ink-2); margin-left: auto; }
+  main { max-width: 1080px; margin: 14px auto 40px; padding: 0 14px; }
+  .note { font-size: 12px; color: var(--muted); margin: 0 0 8px 2px; }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--surface);
+    border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; font-size: 13px; }
+  th, td { padding: 6px 9px; text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th {
+    font-size: 11px; font-weight: 600; color: var(--ink-2); cursor: pointer;
+    border-bottom: 1px solid var(--hairline); background: var(--surface);
+    position: sticky; top: 43px; user-select: none;
+  }
+  thead th:hover { color: var(--ink); }
+  thead th .arr { color: var(--muted); font-size: 9px; }
+  tbody tr { cursor: pointer; }
+  tbody td { border-top: 1px solid var(--hairline); }
+  tbody tr:hover { background: rgba(11,11,11,0.04); }
+  tbody tr.hl { background: #fff8dc; }
+  td { font-variant-numeric: tabular-nums; }
+  td.dim, span.dim { color: var(--muted); }
+  .tno { color: var(--muted); font-size: 11px; }
+  .volbar { display: inline-block; height: 9px; background: #2a78d6; border-radius: 2px;
+    margin-right: 6px; vertical-align: baseline; opacity: 0.8; }
+  .up { color: #9c3810; }     /* deadfall rising = warm warning tone */
+  .down { color: #006300; }
+  .rup { color: #006300; }    /* rating rising = good */
+  .rdown { color: #9c3810; }
+  .flag { color: #9c3810; font-size: 11px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pecos Wilderness — Trails</h1>
+  <nav class="tabs">
+    <a class="tab" href="index.html">Map</a>
+    <a class="tab on" href="trails.html">Trail table</a>
+    <a class="tab" href="burns.html">Burn table</a>
+  </nav>
+  <span class="sub" id="updated"></span>
+</header>
+<main>
+  <p class="note">Click a column to sort · click a row to see the trail on the map ·
+    review data from AllTrails (matched routes); “—” = no AllTrails coverage.
+    Deadfall = share of reviews mentioning it; trends compare the last 3 years to the 5 before.</p>
+  <table id="tbl">
+    <thead><tr id="hdr"></tr></thead>
+    <tbody id="body"></tbody>
+  </table>
+</main>
+<script>
+const fmtFt = m => Math.round(m * 3.28084).toLocaleString();
+
+Promise.all([
+  fetch("data/trails.geojson").then(r => r.json()),
+  fetch("data/conditions.json").then(r => r.ok ? r.json() : null).catch(() => null),
+]).then(([trails, conditions]) => {
+  const cond = (conditions && conditions.usfs) || {};
+  document.getElementById("updated").textContent =
+    conditions ? "AllTrails data through " + conditions.updated.slice(0, 10) : "";
+
+  // ---- bucket segments by trail number ----
+  const byNo = {};
+  trails.features.forEach(f => {
+    const p = f.properties;
+    if (!p.trail_no || !p.trail_name) return;
+    const b = byNo[p.trail_no] = byNo[p.trail_no] ||
+      { no: p.trail_no, name: p.trail_name, miles: 0, zmin: Infinity, zmax: -Infinity };
+    b.miles += p.gis_miles || 0;
+    const nm = p.trail_name;
+    if (nm.length < b.name.length) b.name = nm;
+    const parts = f.geometry.type === "LineString" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    parts.forEach(part => part.forEach(c => {
+      if (c[2] != null) { b.zmin = Math.min(b.zmin, c[2]); b.zmax = Math.max(b.zmax, c[2]); }
+    }));
+  });
+
+  const thisYear = new Date().getFullYear();
+  const yrs = (from, to) => { const a = []; for (let y = from; y <= to; y++) a.push(String(y)); return a; };
+  const RECENT = yrs(thisYear - 2, thisYear), PRIOR = yrs(thisYear - 7, thisYear - 3);
+
+  const rows = Object.values(byNo).filter(b => b.miles >= 1).map(b => {
+    const c = cond[b.no];
+    const r = { ...b, vol: null, rating: null, rTrend: null, df: null, dfTrend: null, flags: [] };
+    if (c && c.reviews_total) {
+      const A = c.annual || {}, D = c.deadfall || {};
+      const sum = (ys, f) => ys.reduce((t, y) => t + f(A[y] || [0, null], D[y] || 0), 0);
+      const nRec = sum(RECENT, a => a[0]), nPri = sum(PRIOR, a => a[0]);
+      r.vol = c.reviews_recent;                       // last 12 months
+      r.rating = c.rating_recent;
+      // rating trend: n-weighted mean, recent vs prior window (needs volume)
+      const wmean = ys => {
+        let n = 0, s = 0;
+        ys.forEach(y => { const a = A[y]; if (a && a[1] != null) { n += a[0]; s += a[0] * a[1]; } });
+        return n >= 30 ? s / n : null;
+      };
+      const mR = wmean(RECENT), mP = wmean(PRIOR);
+      if (mR != null && mP != null) r.rTrend = mR - mP;
+      const dfRec = sum(RECENT, (a, d) => d), dfPri = sum(PRIOR, (a, d) => d);
+      if (nRec >= 20) r.df = dfRec / nRec;
+      if (r.df != null && nPri >= 20 && dfRec + dfPri >= 5) r.dfTrend = dfRec / nRec - dfPri / nPri;
+      r.flags = c.flags || [];
+    }
+    return r;
+  });
+
+  const maxVol = Math.max(1, ...rows.map(r => r.vol || 0));
+  const COLS = [
+    { k: "name",   label: "Trail",            get: r => r.name.toLowerCase(), asc: true },
+    { k: "miles",  label: "Miles",            get: r => r.miles },
+    { k: "elev",   label: "Elevation (ft)",   get: r => r.zmax },
+    { k: "vol",    label: "Reviews (12 mo)",  get: r => r.vol ?? -1 },
+    { k: "rating", label: "Rating",           get: r => r.rating ?? -1 },
+    { k: "rTrend", label: "Rating trend",     get: r => r.rTrend ?? -99 },
+    { k: "df",     label: "Deadfall %",       get: r => r.df ?? -1 },
+    { k: "dfTrend", label: "Deadfall trend",  get: r => r.dfTrend ?? -99 },
+  ];
+  let sortK = "vol", sortAsc = false;
+
+  const titleCase = s => s.replace(/\w\S*/g, t => t[0] + t.slice(1).toLowerCase());
+  const hlNo = new URLSearchParams(location.search).get("hl");
+
+  function render() {
+    const hdr = document.getElementById("hdr");
+    hdr.innerHTML = COLS.map(c =>
+      `<th data-k="${c.k}">${c.label} <span class="arr">${c.k === sortK ? (sortAsc ? "▲" : "▼") : ""}</span></th>`
+    ).join("");
+    hdr.querySelectorAll("th").forEach(th => th.onclick = () => {
+      const k = th.dataset.k;
+      if (sortK === k) sortAsc = !sortAsc;
+      else { sortK = k; sortAsc = COLS.find(c => c.k === k).asc || false; }
+      render();
+    });
+    const col = COLS.find(c => c.k === sortK);
+    const sorted = [...rows].sort((a, b) => {
+      const x = col.get(a), y = col.get(b);
+      return (x < y ? -1 : x > y ? 1 : 0) * (sortAsc ? 1 : -1);
+    });
+    const body = document.getElementById("body");
+    body.innerHTML = sorted.map(r => {
+      const flags = r.flags.length ? ` <span class="flag" title="flagged: ${r.flags.join(", ")}">⚠</span>` : "";
+      const vol = r.vol == null ? `<span class="dim">—</span>` :
+        `<span class="volbar" style="width:${Math.max(2, r.vol / maxVol * 60)}px"></span>${r.vol.toLocaleString()}`;
+      const rt = r.rTrend == null ? `<span class="dim">·</span>` :
+        `<span class="${r.rTrend >= 0.05 ? "rup" : r.rTrend <= -0.05 ? "rdown" : "dim"}">${r.rTrend >= 0 ? "+" : ""}${r.rTrend.toFixed(2)}</span>`;
+      const df = r.df == null ? `<span class="dim">—</span>` : (r.df * 100).toFixed(1) + "%";
+      const dt = r.dfTrend == null ? `<span class="dim">·</span>` :
+        `<span class="${r.dfTrend > 0.01 ? "up" : r.dfTrend < -0.01 ? "down" : "dim"}">${r.dfTrend > 0 ? "▲" : r.dfTrend < 0 ? "▼" : ""} ${(r.dfTrend * 100).toFixed(1)}pp</span>`;
+      return `<tr data-no="${r.no}" class="${r.no === hlNo ? "hl" : ""}">
+        <td>${titleCase(r.name)} <span class="tno">${r.no}</span>${flags}</td>
+        <td>${r.miles.toFixed(1)}</td>
+        <td class="dim">${fmtFt(r.zmin)}–${fmtFt(r.zmax)}</td>
+        <td>${vol}</td>
+        <td>${r.rating ?? '<span class="dim">—</span>'}</td>
+        <td>${rt}</td>
+        <td>${df}</td>
+        <td>${dt}</td>
+      </tr>`;
+    }).join("");
+    body.querySelectorAll("tr").forEach(tr =>
+      tr.onclick = () => location.href = "index.html?trail=" + encodeURIComponent(tr.dataset.no));
+    const hl = body.querySelector("tr.hl");
+    if (hl) hl.scrollIntoView({ block: "center" });
+  }
+  render();
+});
+</script>
+</body>
+</html>

@@ -23,6 +23,10 @@
   header h1 { font-size: 16px; font-weight: 650; }
   header .sub { font-size: 12.5px; color: var(--ink-2); }
   header .sub a { color: inherit; }
+  .tabs { display: flex; gap: 2px; }
+  .tab { padding: 3px 10px; border-radius: 6px; font-size: 12.5px; color: var(--ink-2); text-decoration: none; }
+  .tab.on { background: rgba(11,11,11,0.07); color: var(--ink); font-weight: 600; }
+  .tab:hover { background: rgba(11,11,11,0.05); }
   #map { flex: 1; }
 
   .panel {
@@ -84,6 +88,11 @@
 <div id="app">
   <header>
     <h1>Pecos Wilderness — Burn Areas &amp; Trails</h1>
+    <nav class="tabs">
+      <a class="tab on" href="index.html">Map</a>
+      <a class="tab" href="trails.html">Trail table</a>
+      <a class="tab" href="burns.html">Burn table</a>
+    </nav>
     <span class="sub" id="updated">Loading…</span>
     <span class="sub">Fires: NIFC/WFIGS/MTBS · Trails: USFS · <a href="https://www.fs.usda.gov/r03/santafe/alerts" target="_blank" rel="noopener">Current SFNF alerts &amp; closures ↗</a></span>
   </header>
@@ -163,8 +172,10 @@ Promise.all([
     }),
     onEachFeature: (f, l) => {
       const p = f.properties;
+      const fkey = encodeURIComponent(`${p.name}|${p.year}`);
       l.bindPopup(`<b>${p.name} Fire</b><br>
-        <span style="color:var(--ink-2)">${p.year ?? "Year unknown"} · ${fmt(p.acres)} acres</span>`);
+        <span style="color:var(--ink-2)">${p.year ?? "Year unknown"} · ${fmt(p.acres)} acres</span><br>
+        <a href="burns.html?hl=${fkey}" style="color:var(--ink-2);font-size:11px">→ see in burn table</a>`);
     },
   }).addTo(map);
 
@@ -187,9 +198,12 @@ Promise.all([
 
   const flat = g => g.type === "LineString" ? [g.coordinates] : g.coordinates;
 
-  const trailRenderer = L.canvas({ tolerance: 8 });   // fat click target for thin lines
+  map.createPane("trails");
+  map.getPane("trails").style.zIndex = 450;   // above fire polygons (400), below markers (600)
+  const trailRenderer = L.canvas({ tolerance: 8, pane: "trails" });   // fat click target
   const trailLayer = L.geoJSON(trails, {
     renderer: trailRenderer,
+    pane: "trails",
     style: baseStyle,
     onEachFeature: (f, l) => {
       const p = f.properties;
@@ -446,7 +460,8 @@ Promise.all([
         <div class="theme">${themes || "no condition mentions"}</div>`;
     }
     card.innerHTML = `<div class="t"><span>${nm} <span style="color:var(--muted)">${no ?? ""}</span></span>
-      <button id="info-close">×</button></div>${body}`;
+      <button id="info-close">×</button></div>${body}
+      <div class="ct"><a href="trails.html?hl=${encodeURIComponent(no)}" style="color:var(--ink-2)">→ see in trail table</a></div>`;
     card.style.display = "block";
     card.querySelector("#info-close").onclick = () => card.style.display = "none";
   }
@@ -535,7 +550,24 @@ Promise.all([
   };
   legend.addTo(map);
 
-  map.fitBounds(wildLayer.getBounds().pad(0.05));
+  const deepFire = new URLSearchParams(location.search).get("fire");
+  if (deepFire) {
+    fireLayer.eachLayer(l => {
+      const p = l.feature.properties;
+      if (`${p.name}|${p.year}` === deepFire) {
+        map.fitBounds(l.getBounds().pad(0.4));
+        setTimeout(() => l.openPopup(), 300);
+      }
+    });
+  }
+  const deepNo = new URLSearchParams(location.search).get("trail");
+  const deepKey = deepNo && Object.keys(info).find(k => info[k].no === deepNo);
+  if (deepKey) {
+    selectTrail(deepKey);
+    showInfo(deepNo);
+  } else if (!deepFire) {
+    map.fitBounds(wildLayer.getBounds().pad(0.05));
+  }
   document.getElementById("updated").textContent =
     "Fire perimeters as of " + meta.fetched_utc.slice(0, 10) + " (auto-refreshed monthly)";
 }).catch(e => {
