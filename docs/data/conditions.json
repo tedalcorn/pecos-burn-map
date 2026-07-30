@@ -1,16 +1,16 @@
 {
- "updated": "2026-07-30T17:59:38+00:00",
+ "updated": "2026-07-30T18:52:49+00:00",
  "usfs": {
   "150": {
    "name": "Borrego",
-   "reviews_recent": 557,
-   "reviews_total": 3399,
+   "reviews_recent": 581,
+   "reviews_total": 3528,
    "rating_recent": 4.69,
    "rating_prior": 4.65,
    "tags": {
     "deadfall": {
      "recent": 2,
-     "recent_rate": 0.004,
+     "recent_rate": 0.003,
      "baseline_rate": 0.006
     },
     "washout": {
@@ -26,21 +26,21 @@
     "hard_to_follow": {
      "recent": 0,
      "recent_rate": 0.0,
-     "baseline_rate": 0.001
+     "baseline_rate": 0.002
     },
     "snow_ice": {
-     "recent": 24,
+     "recent": 25,
      "recent_rate": 0.043,
      "baseline_rate": 0.048
     },
     "mud": {
-     "recent": 18,
-     "recent_rate": 0.032,
-     "baseline_rate": 0.012
+     "recent": 20,
+     "recent_rate": 0.034,
+     "baseline_rate": 0.011
     },
     "bugs": {
      "recent": 13,
-     "recent_rate": 0.023,
+     "recent_rate": 0.022,
      "baseline_rate": 0.01
     },
     "burn": {
@@ -49,9 +49,9 @@
      "baseline_rate": 0.0
     },
     "maintained": {
-     "recent": 45,
-     "recent_rate": 0.081,
-     "baseline_rate": 0.036
+     "recent": 46,
+     "recent_rate": 0.079,
+     "baseline_rate": 0.035
     }
    },
    "flags": [],
@@ -85,56 +85,66 @@
      4.44
     ],
     "2018": [
-     65,
-     4.51
+     69,
+     4.52
     ],
     "2019": [
-     138,
+     144,
      4.54
     ],
     "2020": [
-     298,
-     4.57
-    ],
-    "2021": [
-     375,
+     309,
      4.56
     ],
+    "2021": [
+     391,
+     4.57
+    ],
     "2022": [
-     390,
-     4.64
+     413,
+     4.63
     ],
     "2023": [
-     412,
+     427,
      4.63
     ],
     "2024": [
-     678,
+     693,
      4.8
     ],
     "2025": [
-     639,
+     660,
      4.67
     ],
     "2026": [
-     292,
+     310,
      4.69,
-     548
+     597
     ]
    },
+   "deadfall": {
+    "2018": 1,
+    "2019": 1,
+    "2020": 2,
+    "2021": 1,
+    "2022": 3,
+    "2023": 1,
+    "2025": 8,
+    "2026": 2
+   },
    "recent6": {
-    "n": 274,
-    "rating": 4.69,
+    "n": 292,
+    "rating": 4.68,
     "tags": {
-     "maintained": 22,
+     "maintained": 23,
      "bugs": 11,
-     "snow_ice": 5,
-     "mud": 5,
+     "snow_ice": 6,
+     "mud": 6,
      "deadfall": 2,
      "overgrown": 2
     }
    },
-   "n_routes": 5
+   "n_routes": 6
   },
   "152": {
    "name": "Tesuque Creek",
@@ -248,8 +258,15 @@
     "2026": [
      161,
      4.6,
-     302
+     310
     ]
+   },
+   "deadfall": {
+    "2021": 1,
+    "2022": 1,
+    "2023": 2,
+    "2024": 2,
+    "2026": 1
    },
    "recent6": {
     "n": 156,
@@ -343,6 +360,12 @@
      6
     ]
    },
+   "deadfall": {
+    "2020": 1,
+    "2022": 2,
+    "2023": 1,
+    "2026": 1
+   },
    "recent6": {
     "n": 3,
     "rating": 1.67,
@@ -405,6 +428,9 @@
      4.0
     ]
    },
+   "deadfall": {
+    "2020": 1
+   },
    "recent6": {
     "n": 0,
     "rating": null,
@@ -414,116 +440,131 @@
   },
   "163": {
    "name": "Rio En Medio",
-   "reviews_recent": 58,
-   "reviews_total": 272,
-   "rating_recent": 4.74,
-   "rating_prior": 4.63,
+   "reviews_recent": 85,
+   "reviews_total": 815,
+   "rating_recent": 4.75,
+   "rating_prior": 4.62,
    "tags": {
     "deadfall": {
      "recent": 0,
      "recent_rate": 0.0,
-     "baseline_rate": 0.019
+     "baseline_rate": 0.011
     },
     "washout": {
-     "recent": 0,
-     "recent_rate": 0.0,
-     "baseline_rate": 0.009
+     "recent": 1,
+     "recent_rate": 0.012,
+     "baseline_rate": 0.005
     },
     "overgrown": {
-     "recent": 0,
-     "recent_rate": 0.0,
-     "baseline_rate": 0.009
+     "recent": 1,
+     "recent_rate": 0.012,
+     "baseline_rate": 0.003
     },
     "hard_to_follow": {
      "recent": 0,
      "recent_rate": 0.0,
-     "baseline_rate": 0.009
+     "baseline_rate": 0.007
     },
     "snow_ice": {
-     "recent": 1,
-     "recent_rate": 0.017,
-     "baseline_rate": 0.028
+     "recent": 2,
+     "recent_rate": 0.024,
+     "baseline_rate": 0.033
     },
     "mud": {
      "recent": 3,
-     "recent_rate": 0.052,
-     "baseline_rate": 0.009
+     "recent_rate": 0.035,
+     "baseline_rate": 0.021
     },
     "bugs": {
-     "recent": 5,
-     "recent_rate": 0.086,
-     "baseline_rate": 0.014
+     "recent": 7,
+     "recent_rate": 0.082,
+     "baseline_rate": 0.015
     },
     "burn": {
-     "recent": 0,
-     "recent_rate": 0.0,
-     "baseline_rate": 0.005
+     "recent": 1,
+     "recent_rate": 0.012,
+     "baseline_rate": 0.003
     },
     "maintained": {
      "recent": 3,
-     "recent_rate": 0.052,
-     "baseline_rate": 0.009
+     "recent_rate": 0.035,
+     "baseline_rate": 0.011
     }
    },
    "flags": [],
    "annual": {
-    "2018": [
+    "2014": [
      4,
-     4.5
-    ],
-    "2019": [
-     8,
-     4.62
-    ],
-    "2020": [
-     26,
-     4.35
-    ],
-    "2017": [
-     3,
-     4.67
-    ],
-    "2021": [
-     16,
-     4.62
-    ],
-    "2022": [
-     29,
-     4.21
-    ],
-    "2023": [
-     42,
-     4.74
-    ],
-    "2024": [
-     58,
-     4.81
-    ],
-    "2016": [
-     1,
      4.0
     ],
+    "2015": [
+     6,
+     4.5
+    ],
+    "2016": [
+     29,
+     4.69
+    ],
+    "2017": [
+     63,
+     4.56
+    ],
+    "2018": [
+     64,
+     4.64
+    ],
+    "2019": [
+     165,
+     4.64
+    ],
+    "2020": [
+     206,
+     4.66
+    ],
+    "2021": [
+     22,
+     4.41
+    ],
+    "2022": [
+     38,
+     4.05
+    ],
+    "2023": [
+     44,
+     4.73
+    ],
+    "2024": [
+     59,
+     4.81
+    ],
     "2025": [
-     56,
-     4.79
+     61,
+     4.7
     ],
     "2026": [
-     29,
-     4.76,
-     54
+     53,
+     4.75,
+     102
     ]
    },
+   "deadfall": {
+    "2019": 1,
+    "2020": 5,
+    "2023": 2
+   },
    "recent6": {
-    "n": 29,
-    "rating": 4.76,
+    "n": 52,
+    "rating": 4.77,
     "tags": {
-     "bugs": 5,
+     "bugs": 7,
      "maintained": 3,
      "mud": 2,
-     "snow_ice": 1
+     "snow_ice": 1,
+     "washout": 1,
+     "overgrown": 1
     }
    },
-   "n_routes": 1
+   "n_routes": 4
   },
   "175": {
    "name": "Baldy",
@@ -631,8 +672,18 @@
     "2026": [
      93,
      4.9,
-     175
+     179
     ]
+   },
+   "deadfall": {
+    "2017": 1,
+    "2018": 1,
+    "2019": 2,
+    "2020": 4,
+    "2021": 1,
+    "2024": 3,
+    "2025": 3,
+    "2026": 1
    },
    "recent6": {
     "n": 92,
@@ -649,15 +700,15 @@
   },
   "181": {
    "name": "Black Canyon",
-   "reviews_recent": 93,
-   "reviews_total": 739,
-   "rating_recent": 4.65,
-   "rating_prior": 4.43,
+   "reviews_recent": 252,
+   "reviews_total": 1471,
+   "rating_recent": 4.68,
+   "rating_prior": 4.49,
    "tags": {
     "deadfall": {
      "recent": 1,
-     "recent_rate": 0.011,
-     "baseline_rate": 0.005
+     "recent_rate": 0.004,
+     "baseline_rate": 0.004
     },
     "hard_to_follow": {
      "recent": 0,
@@ -665,24 +716,24 @@
      "baseline_rate": 0.002
     },
     "snow_ice": {
-     "recent": 1,
-     "recent_rate": 0.011,
-     "baseline_rate": 0.054
+     "recent": 5,
+     "recent_rate": 0.02,
+     "baseline_rate": 0.051
     },
     "mud": {
-     "recent": 2,
-     "recent_rate": 0.022,
-     "baseline_rate": 0.0
-    },
-    "bugs": {
-     "recent": 0,
-     "recent_rate": 0.0,
+     "recent": 6,
+     "recent_rate": 0.024,
      "baseline_rate": 0.005
     },
+    "bugs": {
+     "recent": 2,
+     "recent_rate": 0.008,
+     "baseline_rate": 0.004
+    },
     "maintained": {
-     "recent": 6,
-     "recent_rate": 0.065,
-     "baseline_rate": 0.04
+     "recent": 13,
+     "recent_rate": 0.052,
+     "baseline_rate": 0.036
     }
    },
    "flags": [],
@@ -691,73 +742,85 @@
      1,
      5.0
     ],
+    "2014": [
+     1,
+     4.0
+    ],
     "2015": [
-     4,
-     4.5
+     12,
+     4.33
     ],
     "2016": [
-     9,
-     4.22
+     21,
+     4.24
     ],
     "2017": [
-     16,
+     32,
      4.06
     ],
     "2018": [
-     13,
-     4.08
+     26,
+     3.96
     ],
     "2019": [
-     30,
-     4.2
+     64,
+     4.22
     ],
     "2020": [
-     95,
-     4.33
+     134,
+     4.32
     ],
     "2012": [
      1,
      4.0
     ],
     "2021": [
-     125,
-     4.35
+     191,
+     4.43
     ],
     "2010": [
      1,
      3.0
     ],
     "2022": [
-     77,
-     4.44
+     134,
+     4.46
     ],
     "2023": [
-     84,
-     4.58
+     137,
+     4.56
     ],
     "2024": [
-     126,
-     4.54
+     277,
+     4.62
     ],
     "2025": [
-     107,
-     4.64
+     314,
+     4.72
     ],
     "2026": [
-     49,
-     4.59,
-     92
+     123,
+     4.66,
+     237
     ]
    },
+   "deadfall": {
+    "2019": 1,
+    "2023": 4,
+    "2026": 1
+   },
    "recent6": {
-    "n": 45,
-    "rating": 4.56,
+    "n": 112,
+    "rating": 4.64,
     "tags": {
-     "maintained": 3,
+     "maintained": 8,
+     "snow_ice": 2,
+     "bugs": 2,
+     "mud": 1,
      "deadfall": 1
     }
    },
-   "n_routes": 1
+   "n_routes": 3
   },
   "182": {
    "name": "Bear Wallow",
@@ -854,8 +917,15 @@
     "2026": [
      262,
      4.71,
-     492
+     505
     ]
+   },
+   "deadfall": {
+    "2018": 1,
+    "2019": 1,
+    "2021": 1,
+    "2025": 7,
+    "2026": 1
    },
    "recent6": {
     "n": 248,
@@ -869,6 +939,271 @@
     }
    },
    "n_routes": 1
+  },
+  "183": {
+   "name": "Chamisa",
+   "reviews_recent": 512,
+   "reviews_total": 2730,
+   "rating_recent": 4.75,
+   "rating_prior": 4.58,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.002,
+     "baseline_rate": 0.002
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.002
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.0
+    },
+    "hard_to_follow": {
+     "recent": 2,
+     "recent_rate": 0.004,
+     "baseline_rate": 0.004
+    },
+    "snow_ice": {
+     "recent": 16,
+     "recent_rate": 0.031,
+     "baseline_rate": 0.044
+    },
+    "mud": {
+     "recent": 11,
+     "recent_rate": 0.021,
+     "baseline_rate": 0.011
+    },
+    "bugs": {
+     "recent": 8,
+     "recent_rate": 0.016,
+     "baseline_rate": 0.004
+    },
+    "maintained": {
+     "recent": 25,
+     "recent_rate": 0.049,
+     "baseline_rate": 0.035
+    }
+   },
+   "flags": [],
+   "annual": {
+    "2013": [
+     4,
+     4.0
+    ],
+    "2014": [
+     3,
+     4.33
+    ],
+    "2015": [
+     8,
+     3.88
+    ],
+    "2016": [
+     23,
+     4.22
+    ],
+    "2012": [
+     1,
+     4.0
+    ],
+    "2017": [
+     49,
+     4.14
+    ],
+    "2018": [
+     70,
+     4.13
+    ],
+    "2019": [
+     117,
+     4.31
+    ],
+    "2020": [
+     204,
+     4.46
+    ],
+    "2021": [
+     360,
+     4.6
+    ],
+    "2022": [
+     338,
+     4.59
+    ],
+    "2023": [
+     221,
+     4.6
+    ],
+    "2024": [
+     461,
+     4.68
+    ],
+    "2025": [
+     654,
+     4.74
+    ],
+    "2026": [
+     214,
+     4.74,
+     412
+    ]
+   },
+   "deadfall": {
+    "2022": 1,
+    "2025": 4
+   },
+   "recent6": {
+    "n": 199,
+    "rating": 4.74,
+    "tags": {
+     "maintained": 18,
+     "snow_ice": 7,
+     "bugs": 6,
+     "mud": 4,
+     "hard_to_follow": 1
+    }
+   },
+   "n_routes": 3
+  },
+  "19": {
+   "name": "Serpent Lake",
+   "reviews_recent": 35,
+   "reviews_total": 291,
+   "rating_recent": 4.54,
+   "rating_prior": 4.41,
+   "tags": {
+    "deadfall": {
+     "recent": 2,
+     "recent_rate": 0.057,
+     "baseline_rate": 0.043
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.008
+    },
+    "overgrown": {
+     "recent": 1,
+     "recent_rate": 0.029,
+     "baseline_rate": 0.004
+    },
+    "hard_to_follow": {
+     "recent": 1,
+     "recent_rate": 0.029,
+     "baseline_rate": 0.02
+    },
+    "snow_ice": {
+     "recent": 2,
+     "recent_rate": 0.057,
+     "baseline_rate": 0.109
+    },
+    "mud": {
+     "recent": 7,
+     "recent_rate": 0.2,
+     "baseline_rate": 0.113
+    },
+    "bugs": {
+     "recent": 4,
+     "recent_rate": 0.114,
+     "baseline_rate": 0.008
+    },
+    "burn": {
+     "recent": 4,
+     "recent_rate": 0.114,
+     "baseline_rate": 0.043
+    },
+    "maintained": {
+     "recent": 3,
+     "recent_rate": 0.086,
+     "baseline_rate": 0.059
+    }
+   },
+   "flags": [
+    "burn"
+   ],
+   "annual": {
+    "2012": [
+     2,
+     3.5
+    ],
+    "2016": [
+     5,
+     4.6
+    ],
+    "2017": [
+     14,
+     4.64
+    ],
+    "2018": [
+     11,
+     4.45
+    ],
+    "2019": [
+     22,
+     4.59
+    ],
+    "2020": [
+     71,
+     4.49
+    ],
+    "2021": [
+     44,
+     4.34
+    ],
+    "2022": [
+     9,
+     3.78
+    ],
+    "2023": [
+     31,
+     4.48
+    ],
+    "2024": [
+     28,
+     4.21
+    ],
+    "2011": [
+     1,
+     5.0
+    ],
+    "2025": [
+     37,
+     4.54
+    ],
+    "2026": [
+     16,
+     4.38,
+     31
+    ]
+   },
+   "deadfall": {
+    "2012": 1,
+    "2019": 1,
+    "2021": 1,
+    "2022": 1,
+    "2023": 6,
+    "2024": 1,
+    "2026": 2
+   },
+   "recent6": {
+    "n": 16,
+    "rating": 4.38,
+    "tags": {
+     "bugs": 4,
+     "mud": 3,
+     "snow_ice": 2,
+     "deadfall": 2,
+     "maintained": 2,
+     "hard_to_follow": 1,
+     "overgrown": 1,
+     "burn": 1
+    }
+   },
+   "n_routes": 3
   },
   "214": {
    "name": "Lone Pine Mesa",
@@ -911,12 +1246,151 @@
      6
     ]
    },
+   "deadfall": {},
    "recent6": {
     "n": 2,
     "rating": 4.5,
     "tags": {}
    },
    "n_routes": 1
+  },
+  "223": {
+   "name": "Hermits Peak",
+   "reviews_recent": 25,
+   "reviews_total": 386,
+   "rating_recent": 4.52,
+   "rating_prior": 4.52,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.04,
+     "baseline_rate": 0.053
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.014
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.019
+    },
+    "snow_ice": {
+     "recent": 1,
+     "recent_rate": 0.04,
+     "baseline_rate": 0.069
+    },
+    "mud": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.019
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "burn": {
+     "recent": 2,
+     "recent_rate": 0.08,
+     "baseline_rate": 0.011
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.047
+    }
+   },
+   "flags": [],
+   "annual": {
+    "2011": [
+     1,
+     5.0
+    ],
+    "2012": [
+     4,
+     4.5
+    ],
+    "2013": [
+     2,
+     5.0
+    ],
+    "2014": [
+     3,
+     4.33
+    ],
+    "2016": [
+     6,
+     4.17
+    ],
+    "2017": [
+     31,
+     4.48
+    ],
+    "2018": [
+     12,
+     4.5
+    ],
+    "2019": [
+     31,
+     4.55
+    ],
+    "2020": [
+     69,
+     4.64
+    ],
+    "2022": [
+     16,
+     3.94
+    ],
+    "2021": [
+     94,
+     4.6
+    ],
+    "2023": [
+     26,
+     4.58
+    ],
+    "2024": [
+     50,
+     4.6
+    ],
+    "2025": [
+     23,
+     4.22
+    ],
+    "2026": [
+     18,
+     4.44,
+     35
+    ]
+   },
+   "deadfall": {
+    "2017": 2,
+    "2019": 3,
+    "2020": 1,
+    "2022": 3,
+    "2021": 3,
+    "2023": 1,
+    "2024": 2,
+    "2025": 4,
+    "2026": 1
+   },
+   "recent6": {
+    "n": 18,
+    "rating": 4.44,
+    "tags": {
+     "burn": 2,
+     "deadfall": 1
+    }
+   },
+   "n_routes": 3
   },
   "224": {
    "name": "Valdez",
@@ -995,6 +1469,9 @@
      4.0,
      2
     ]
+   },
+   "deadfall": {
+    "2026": 1
    },
    "recent6": {
     "n": 1,
@@ -1109,8 +1586,18 @@
     "2026": [
      24,
      4.71,
-     45
+     46
     ]
+   },
+   "deadfall": {
+    "2019": 1,
+    "2020": 2,
+    "2021": 3,
+    "2022": 1,
+    "2023": 6,
+    "2024": 5,
+    "2025": 7,
+    "2026": 4
    },
    "recent6": {
     "n": 24,
@@ -1177,6 +1664,9 @@
      3.75,
      15
     ]
+   },
+   "deadfall": {
+    "2026": 1
    },
    "recent6": {
     "n": 8,
@@ -1311,8 +1801,18 @@
     "2026": [
      87,
      4.8,
-     163
+     168
     ]
+   },
+   "deadfall": {
+    "2019": 1,
+    "2020": 2,
+    "2021": 4,
+    "2022": 3,
+    "2023": 2,
+    "2024": 3,
+    "2025": 4,
+    "2026": 3
    },
    "recent6": {
     "n": 86,
@@ -1441,8 +1941,19 @@
     "2026": [
      18,
      4.44,
-     34
+     35
     ]
+   },
+   "deadfall": {
+    "2017": 2,
+    "2019": 3,
+    "2020": 1,
+    "2022": 3,
+    "2021": 3,
+    "2023": 1,
+    "2024": 2,
+    "2025": 4,
+    "2026": 1
    },
    "recent6": {
     "n": 18,
@@ -1570,8 +2081,19 @@
     "2026": [
      15,
      4.13,
-     28
+     29
     ]
+   },
+   "deadfall": {
+    "2017": 2,
+    "2018": 2,
+    "2019": 3,
+    "2020": 3,
+    "2022": 3,
+    "2023": 4,
+    "2024": 5,
+    "2025": 1,
+    "2026": 6
    },
    "recent6": {
     "n": 15,
@@ -1692,6 +2214,17 @@
      5.0,
      2
     ]
+   },
+   "deadfall": {
+    "2017": 1,
+    "2018": 2,
+    "2019": 2,
+    "2020": 8,
+    "2021": 1,
+    "2022": 1,
+    "2023": 5,
+    "2024": 7,
+    "2025": 5
    },
    "recent6": {
     "n": 0,
@@ -1818,8 +2351,20 @@
     "2026": [
      23,
      4.65,
-     43
+     44
     ]
+   },
+   "deadfall": {
+    "2017": 1,
+    "2018": 3,
+    "2019": 7,
+    "2020": 12,
+    "2021": 8,
+    "2022": 3,
+    "2023": 9,
+    "2024": 8,
+    "2025": 10,
+    "2026": 3
    },
    "recent6": {
     "n": 23,
@@ -1836,45 +2381,45 @@
   },
   "254": {
    "name": "Winsor",
-   "reviews_recent": 2231,
-   "reviews_total": 14306,
-   "rating_recent": 4.79,
+   "reviews_recent": 2641,
+   "reviews_total": 16508,
+   "rating_recent": 4.78,
    "rating_prior": 4.67,
    "tags": {
     "deadfall": {
-     "recent": 31,
-     "recent_rate": 0.014,
-     "baseline_rate": 0.016
+     "recent": 32,
+     "recent_rate": 0.012,
+     "baseline_rate": 0.014
     },
     "washout": {
      "recent": 2,
      "recent_rate": 0.001,
-     "baseline_rate": 0.002
+     "baseline_rate": 0.001
     },
     "overgrown": {
-     "recent": 4,
+     "recent": 5,
      "recent_rate": 0.002,
      "baseline_rate": 0.003
     },
     "hard_to_follow": {
-     "recent": 15,
-     "recent_rate": 0.007,
-     "baseline_rate": 0.013
+     "recent": 16,
+     "recent_rate": 0.006,
+     "baseline_rate": 0.012
     },
     "snow_ice": {
-     "recent": 179,
-     "recent_rate": 0.08,
-     "baseline_rate": 0.082
+     "recent": 199,
+     "recent_rate": 0.075,
+     "baseline_rate": 0.079
     },
     "mud": {
-     "recent": 100,
-     "recent_rate": 0.045,
-     "baseline_rate": 0.015
+     "recent": 101,
+     "recent_rate": 0.038,
+     "baseline_rate": 0.014
     },
     "bugs": {
-     "recent": 94,
-     "recent_rate": 0.042,
-     "baseline_rate": 0.017
+     "recent": 97,
+     "recent_rate": 0.037,
+     "baseline_rate": 0.015
     },
     "burn": {
      "recent": 0,
@@ -1882,98 +2427,110 @@
      "baseline_rate": 0.0
     },
     "maintained": {
-     "recent": 154,
-     "recent_rate": 0.069,
-     "baseline_rate": 0.038
+     "recent": 168,
+     "recent_rate": 0.064,
+     "baseline_rate": 0.036
     }
    },
    "flags": [],
    "annual": {
     "2010": [
-     3,
-     4.33
+     4,
+     4.0
     ],
     "2011": [
-     4,
-     4.5
+     5,
+     4.2
     ],
     "2012": [
-     10,
-     4.6
+     15,
+     4.67
     ],
     "2013": [
-     6,
-     4.5
+     9,
+     4.44
     ],
     "2014": [
-     16,
-     4.56
+     17,
+     4.53
     ],
     "2015": [
-     28,
-     4.54
+     29,
+     4.55
     ],
     "2016": [
-     95,
-     4.63
+     117,
+     4.62
     ],
     "2017": [
-     322,
+     364,
      4.53
     ],
     "2018": [
-     334,
-     4.64
+     415,
+     4.6
     ],
     "2019": [
-     765,
-     4.64
+     906,
+     4.62
     ],
     "2020": [
-     1723,
-     4.65
+     1986,
+     4.63
     ],
     "2021": [
-     1810,
+     2066,
      4.6
     ],
     "2022": [
-     1670,
-     4.64
+     1970,
+     4.65
     ],
     "2023": [
-     1794,
-     4.73
+     2051,
+     4.72
     ],
     "2024": [
-     2224,
+     2501,
      4.76
     ],
     "2025": [
-     2314,
+     2766,
      4.73
     ],
     "2026": [
-     1181,
-     4.79,
-     2217
+     1279,
+     4.78,
+     2464
     ]
    },
+   "deadfall": {
+    "2017": 1,
+    "2018": 5,
+    "2019": 16,
+    "2020": 29,
+    "2021": 26,
+    "2022": 14,
+    "2023": 28,
+    "2024": 43,
+    "2025": 42,
+    "2026": 22
+   },
    "recent6": {
-    "n": 1142,
-    "rating": 4.79,
+    "n": 1231,
+    "rating": 4.78,
     "tags": {
-     "snow_ice": 109,
-     "maintained": 96,
-     "bugs": 84,
-     "mud": 53,
+     "snow_ice": 114,
+     "maintained": 97,
+     "bugs": 86,
+     "mud": 54,
      "deadfall": 22,
      "hard_to_follow": 10,
-     "overgrown": 2,
+     "overgrown": 3,
      "washout": 1
     }
    },
-   "n_routes": 30
+   "n_routes": 36
   },
   "255": {
    "name": "Norski",
@@ -2061,8 +2618,14 @@
     "2026": [
      90,
      4.81,
-     169
+     173
     ]
+   },
+   "deadfall": {
+    "2019": 2,
+    "2020": 1,
+    "2021": 1,
+    "2024": 2
    },
    "recent6": {
     "n": 89,
@@ -2078,44 +2641,126 @@
   },
   "257": {
    "name": "Jacks Creek",
-   "reviews_recent": 1,
-   "reviews_total": 15,
-   "rating_recent": 5.0,
-   "rating_prior": 4.64,
-   "tags": {},
+   "reviews_recent": 30,
+   "reviews_total": 292,
+   "rating_recent": 4.5,
+   "rating_prior": 4.58,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.057
+    },
+    "overgrown": {
+     "recent": 1,
+     "recent_rate": 0.033,
+     "baseline_rate": 0.019
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.015
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.034
+    },
+    "mud": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.023
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.019
+    },
+    "maintained": {
+     "recent": 1,
+     "recent_rate": 0.033,
+     "baseline_rate": 0.061
+    }
+   },
    "flags": [],
    "annual": {
-    "2019": [
+    "2011": [
      1,
-     5.0
+     4.0
     ],
-    "2021": [
-     3,
-     4.33
+    "2014": [
+     1,
+     4.0
     ],
-    "2022": [
+    "2016": [
      2,
      4.0
     ],
-    "2024": [
-     7,
-     5.0
+    "2017": [
+     6,
+     4.5
+    ],
+    "2019": [
+     19,
+     4.58
+    ],
+    "2018": [
+     4,
+     4.75
     ],
     "2020": [
-     1,
-     4.0
+     47,
+     4.45
     ],
-    "2025": [
+    "2021": [
+     28,
+     4.79
+    ],
+    "2022": [
+     14,
+     4.64
+    ],
+    "2023": [
+     48,
+     4.54
+    ],
+    "2024": [
+     59,
+     4.63
+    ],
+    "2010": [
      1,
      5.0
+    ],
+    "2025": [
+     57,
+     4.6
+    ],
+    "2026": [
+     4,
+     4.0,
+     8
     ]
    },
+   "deadfall": {
+    "2017": 2,
+    "2019": 2,
+    "2020": 4,
+    "2022": 2,
+    "2023": 2,
+    "2024": 3
+   },
    "recent6": {
-    "n": 0,
-    "rating": null,
+    "n": 4,
+    "rating": 4.0,
     "tags": {}
    },
-   "n_routes": 1
+   "n_routes": 6
   },
   "259": {
    "name": "Dockweiler",
@@ -2184,6 +2829,9 @@
      4.0,
      2
     ]
+   },
+   "deadfall": {
+    "2023": 2
    },
    "recent6": {
     "n": 1,
@@ -2288,12 +2936,19 @@
      8
     ]
    },
+   "deadfall": {
+    "2019": 1,
+    "2022": 1,
+    "2024": 1,
+    "2025": 1,
+    "2026": 1
+   },
    "recent6": {
     "n": 4,
     "rating": 4.25,
     "tags": {
-     "deadfall": 1,
-     "mud": 1
+     "mud": 1,
+     "deadfall": 1
     }
    },
    "n_routes": 2
@@ -2400,8 +3055,18 @@
     "2026": [
      19,
      4.63,
-     36
+     37
     ]
+   },
+   "deadfall": {
+    "2019": 1,
+    "2020": 3,
+    "2021": 3,
+    "2022": 1,
+    "2023": 4,
+    "2024": 6,
+    "2025": 5,
+    "2026": 3
    },
    "recent6": {
     "n": 19,
@@ -2499,6 +3164,16 @@
      5.0,
      8
     ]
+   },
+   "deadfall": {
+    "2018": 1,
+    "2020": 1,
+    "2021": 2,
+    "2022": 1,
+    "2023": 1,
+    "2024": 1,
+    "2025": 1,
+    "2026": 1
    },
    "recent6": {
     "n": 4,
@@ -2629,8 +3304,13 @@
     "2026": [
      57,
      4.81,
-     107
+     110
     ]
+   },
+   "deadfall": {
+    "2020": 1,
+    "2023": 1,
+    "2024": 2
    },
    "recent6": {
     "n": 55,
@@ -2720,8 +3400,13 @@
     "2026": [
      5,
      4.4,
-     9
+     10
     ]
+   },
+   "deadfall": {
+    "2021": 1,
+    "2023": 1,
+    "2024": 4
    },
    "recent6": {
     "n": 5,
@@ -2838,8 +3523,19 @@
     "2026": [
      16,
      4.69,
-     30
+     31
     ]
+   },
+   "deadfall": {
+    "2017": 1,
+    "2018": 2,
+    "2019": 6,
+    "2020": 7,
+    "2021": 6,
+    "2022": 1,
+    "2023": 3,
+    "2024": 3,
+    "2025": 3
    },
    "recent6": {
     "n": 16,
@@ -2921,6 +3617,9 @@
      5.0,
      2
     ]
+   },
+   "deadfall": {
+    "2024": 2
    },
    "recent6": {
     "n": 1,
@@ -3037,8 +3736,14 @@
     "2026": [
      18,
      4.61,
-     34
+     35
     ]
+   },
+   "deadfall": {
+    "2020": 1,
+    "2023": 1,
+    "2024": 1,
+    "2025": 3
    },
    "recent6": {
     "n": 18,
@@ -3152,8 +3857,16 @@
     "2026": [
      42,
      4.74,
-     79
+     81
     ]
+   },
+   "deadfall": {
+    "2020": 2,
+    "2022": 1,
+    "2023": 2,
+    "2024": 6,
+    "2025": 1,
+    "2026": 1
    },
    "recent6": {
     "n": 41,
@@ -3273,8 +3986,20 @@
     "2026": [
      110,
      4.79,
-     206
+     212
     ]
+   },
+   "deadfall": {
+    "2017": 1,
+    "2018": 3,
+    "2019": 6,
+    "2020": 13,
+    "2021": 14,
+    "2022": 7,
+    "2023": 13,
+    "2024": 16,
+    "2025": 17,
+    "2026": 7
    },
    "recent6": {
     "n": 110,
@@ -3387,8 +4112,16 @@
     "2026": [
      17,
      4.65,
-     32
+     33
     ]
+   },
+   "deadfall": {
+    "2020": 3,
+    "2022": 3,
+    "2023": 3,
+    "2024": 1,
+    "2025": 5,
+    "2026": 2
    },
    "recent6": {
     "n": 17,
@@ -3401,15 +4134,15 @@
   },
   "31": {
    "name": "Trampas Lake",
-   "reviews_recent": 107,
-   "reviews_total": 821,
+   "reviews_recent": 111,
+   "reviews_total": 831,
    "rating_recent": 4.79,
    "rating_prior": 4.75,
    "tags": {
     "deadfall": {
      "recent": 7,
-     "recent_rate": 0.065,
-     "baseline_rate": 0.052
+     "recent_rate": 0.063,
+     "baseline_rate": 0.051
     },
     "washout": {
      "recent": 0,
@@ -3428,23 +4161,23 @@
     },
     "snow_ice": {
      "recent": 12,
-     "recent_rate": 0.112,
+     "recent_rate": 0.108,
      "baseline_rate": 0.094
     },
     "mud": {
      "recent": 13,
-     "recent_rate": 0.121,
-     "baseline_rate": 0.034
+     "recent_rate": 0.117,
+     "baseline_rate": 0.033
     },
     "bugs": {
      "recent": 8,
-     "recent_rate": 0.075,
+     "recent_rate": 0.072,
      "baseline_rate": 0.021
     },
     "maintained": {
      "recent": 5,
-     "recent_rate": 0.047,
-     "baseline_rate": 0.073
+     "recent_rate": 0.045,
+     "baseline_rate": 0.072
     }
    },
    "flags": [],
@@ -3478,37 +4211,47 @@
      4.82
     ],
     "2020": [
-     145,
-     4.81
+     146,
+     4.82
     ],
     "2021": [
-     93,
-     4.58
+     95,
+     4.59
     ],
     "2022": [
-     65,
-     4.66
+     66,
+     4.64
     ],
     "2023": [
      105,
      4.73
     ],
     "2024": [
-     116,
+     118,
      4.78
     ],
     "2025": [
-     119,
-     4.79
+     122,
+     4.8
     ],
     "2026": [
-     55,
-     4.76,
-     103
+     56,
+     4.77,
+     108
     ]
    },
+   "deadfall": {
+    "2019": 5,
+    "2020": 3,
+    "2021": 2,
+    "2022": 13,
+    "2023": 10,
+    "2024": 2,
+    "2025": 4,
+    "2026": 5
+   },
    "recent6": {
-    "n": 54,
+    "n": 55,
     "rating": 4.76,
     "tags": {
      "snow_ice": 9,
@@ -3518,7 +4261,7 @@
      "maintained": 2
     }
    },
-   "n_routes": 4
+   "n_routes": 5
   },
   "323": {
    "name": "Cowles Pond",
@@ -3565,6 +4308,7 @@
      2
     ]
    },
+   "deadfall": {},
    "recent6": {
     "n": 1,
     "rating": 5.0,
@@ -3574,55 +4318,60 @@
   },
   "36A": {
    "name": "Horseshoe Lake",
-   "reviews_recent": 0,
-   "reviews_total": 13,
-   "rating_recent": null,
-   "rating_prior": 3.69,
+   "reviews_recent": 1,
+   "reviews_total": 17,
+   "rating_recent": 1.0,
+   "rating_prior": 3.94,
    "tags": {
     "deadfall": {
      "recent": 0,
-     "recent_rate": 0,
-     "baseline_rate": 0.154
+     "recent_rate": 0.0,
+     "baseline_rate": 0.125
     },
     "overgrown": {
      "recent": 0,
-     "recent_rate": 0,
-     "baseline_rate": 0.077
+     "recent_rate": 0.0,
+     "baseline_rate": 0.062
     },
     "snow_ice": {
      "recent": 0,
-     "recent_rate": 0,
-     "baseline_rate": 0.077
+     "recent_rate": 0.0,
+     "baseline_rate": 0.062
     },
     "mud": {
      "recent": 0,
-     "recent_rate": 0,
-     "baseline_rate": 0.077
+     "recent_rate": 0.0,
+     "baseline_rate": 0.062
+    },
+    "bugs": {
+     "recent": 1,
+     "recent_rate": 1.0,
+     "baseline_rate": 0.0
     },
     "burn": {
      "recent": 0,
-     "recent_rate": 0,
-     "baseline_rate": 0.077
+     "recent_rate": 0.0,
+     "baseline_rate": 0.062
     },
     "maintained": {
      "recent": 0,
-     "recent_rate": 0,
-     "baseline_rate": 0.154
+     "recent_rate": 0.0,
+     "baseline_rate": 0.125
     }
    },
    "flags": [],
    "annual": {
+    "2019": [
+     2,
+     3.5
+    ],
     "2020": [
      6,
      4.5
     ],
-    "2019": [
-     1,
-     2.0
-    ],
     "2021": [
-     3,
-     3.33
+     4,
+     3.75
     ],
     "2022": [
      1,
@@ -3633,16 +4382,27 @@
      3.0
     ],
     "2025": [
-     1,
+     2,
      5.0
+    ],
+    "2026": [
+     1,
+     1.0,
+     2
     ]
    },
-   "recent6": {
-    "n": 0,
-    "rating": null,
-    "tags": {}
+   "deadfall": {
+    "2020": 1,
+    "2024": 1
    },
-   "n_routes": 1
+   "recent6": {
+    "n": 1,
+    "rating": 1.0,
+    "tags": {
+     "bugs": 1
+    }
+   },
+   "n_routes": 2
   },
   "38": {
    "name": "Jicarita Creek",
@@ -3690,8 +4450,12 @@
     "2026": [
      5,
      4.6,
-     9
+     10
     ]
+   },
+   "deadfall": {
+    "2025": 1,
+    "2026": 1
    },
    "recent6": {
     "n": 5,
@@ -3798,8 +4562,17 @@
     "2026": [
      44,
      4.75,
-     83
+     85
     ]
+   },
+   "deadfall": {
+    "2020": 3,
+    "2021": 4,
+    "2022": 1,
+    "2023": 3,
+    "2024": 12,
+    "2025": 3,
+    "2026": 2
    },
    "recent6": {
     "n": 43,
@@ -3923,8 +4696,17 @@
     "2026": [
      355,
      4.85,
-     666
+     684
     ]
+   },
+   "deadfall": {
+    "2019": 4,
+    "2020": 2,
+    "2021": 1,
+    "2023": 3,
+    "2024": 6,
+    "2025": 3,
+    "2026": 1
    },
    "recent6": {
     "n": 342,
@@ -4026,6 +4808,11 @@
      4
     ]
    },
+   "deadfall": {
+    "2020": 2,
+    "2021": 1,
+    "2022": 1
+   },
    "recent6": {
     "n": 1,
     "rating": 5.0,
@@ -4052,13 +4839,19 @@
   "10009550": {
    "name": "Trampas Lakes Trail",
    "usfs": {
-    "31": "startpoint"
+    "31": "name"
    }
   },
   "10010253": {
    "name": "Winsor Trail: Aspen Basin to Winsor Road",
    "usfs": {
     "254": "name"
+   }
+  },
+  "10012392": {
+   "name": "Lower Rio en Medio Trail",
+   "usfs": {
+    "163": "name"
    }
   },
   "10016295": {
@@ -4076,6 +4869,7 @@
   "10022497": {
    "name": "Hermit Peak Trail",
    "usfs": {
+    "223": "name",
     "247": "startpoint"
    }
   },
@@ -4087,7 +4881,9 @@
   },
   "10026691": {
    "name": "West and East Circle Loop",
-   "usfs": {}
+   "usfs": {
+    "181": "startpoint"
+   }
   },
   "10026692": {
    "name": "Winsor Trail to Big Tesuque Canyon",
@@ -4123,6 +4919,12 @@
     "242": "name"
    }
   },
+  "10031190": {
+   "name": "Chamisa Trail",
+   "usfs": {
+    "183": "name"
+   }
+  },
   "10032887": {
    "name": "Tesuque Creek North Fork Trail",
    "usfs": {
@@ -4146,7 +4948,14 @@
    "name": "Tesuque Peak via Tesuque Creek North Fork Trail",
    "usfs": {
     "152": "name",
-    "269": "name"
+    "269": "name",
+    "254": "startpoint"
+   }
+  },
+  "10033994": {
+   "name": "Serpent Lake Trail",
+   "usfs": {
+    "19": "name"
    }
   },
   "10035504": {
@@ -4158,6 +4967,7 @@
   "10037042": {
    "name": "Jack's Creek Trail [CLOSED]",
    "usfs": {
+    "257": "name",
     "249": "startpoint"
    }
   },
@@ -4196,7 +5006,9 @@
   },
   "10258472": {
    "name": "Tesuque Peak via FS-150",
-   "usfs": {}
+   "usfs": {
+    "254": "startpoint"
+   }
   },
   "10258484": {
    "name": "Cave Creek Trail",
@@ -4221,7 +5033,9 @@
   },
   "10267474": {
    "name": "Alamos Vista Trail",
-   "usfs": {}
+   "usfs": {
+    "254": "startpoint"
+   }
   },
   "10268399": {
    "name": "Hamilton Mesa #249 and Larkspur #260",
@@ -4247,6 +5061,12 @@
    "usfs": {
     "251": "name",
     "25": "startpoint"
+   }
+  },
+  "10280951": {
+   "name": "Rio en Medio Falls",
+   "usfs": {
+    "163": "name"
    }
   },
   "10288679": {
@@ -4282,6 +5102,12 @@
     "31": "startpoint"
    }
   },
+  "10309845": {
+   "name": "Jicarita Peak",
+   "usfs": {
+    "19": "startpoint"
+   }
+  },
   "10323852": {
    "name": "Johnson Lake Trail",
    "usfs": {
@@ -4309,8 +5135,13 @@
   "10348164": {
    "name": "Hermit Peak to Porvenir Divide Trails Loop",
    "usfs": {
+    "223": "name",
     "247": "startpoint"
    }
+  },
+  "10352480": {
+   "name": "Nambe Falls",
+   "usfs": {}
   },
   "10361581": {
    "name": "Truchas Lakes [CLOSED]",
@@ -4327,9 +5158,22 @@
   "10402422": {
    "name": "Beatty's, Jack's Creek, Skyline and Pecos Trail Loop [CLOSED]",
    "usfs": {
+    "257": "name",
     "251": "name",
     "25": "startpoint"
    }
+  },
+  "10405694": {
+   "name": "Laguna Vista Trail",
+   "usfs": {}
+  },
+  "10405698": {
+   "name": "Santa Cruz Lake Overlook Trail",
+   "usfs": {}
+  },
+  "10405748": {
+   "name": "Debris Basin Trail via La Caja Trail",
+   "usfs": {}
   },
   "10457624": {
    "name": "Katherine Lake",
@@ -4337,12 +5181,22 @@
     "254": "startpoint"
    }
   },
+  "10473145": {
+   "name": "Turquoise Mine Trail",
+   "usfs": {}
+  },
   "10477566": {
    "name": "Lake Johnson via Skyline and Windsor Ridge Trail #271",
    "usfs": {
     "251": "name",
     "267": "name",
     "323": "startpoint"
+   }
+  },
+  "10480644": {
+   "name": "Rio En Medio and Nambe Loop",
+   "usfs": {
+    "163": "name"
    }
   },
   "10485768": {
@@ -4362,6 +5216,7 @@
   "10530316": {
    "name": "Jack's Creek and Skyline Lollipop Trail [CLOSED]",
    "usfs": {
+    "257": "name",
     "251": "name",
     "25": "startpoint"
    }
@@ -4378,9 +5233,17 @@
     "152": "startpoint"
    }
   },
+  "10533898": {
+   "name": "Chamisa and Tesuque Loop",
+   "usfs": {
+    "183": "name"
+   }
+  },
   "10534125": {
    "name": "Aspen Vista to Evergreen via Ridge South of Tesuque Peak",
-   "usfs": {}
+   "usfs": {
+    "254": "startpoint"
+   }
   },
   "10534455": {
    "name": "Lower Nambe Loop",
@@ -4461,6 +5324,7 @@
   "10570297": {
    "name": "Beatty's Trail #25 to Jack's Creek Trail [CLOSED]",
    "usfs": {
+    "257": "name",
     "397": "startpoint"
    }
   },
@@ -4476,6 +5340,13 @@
    "usfs": {
     "160": "name",
     "150": "startpoint"
+   }
+  },
+  "10641366": {
+   "name": "Chamisa and Borrego Loop",
+   "usfs": {
+    "150": "name",
+    "183": "name"
    }
   },
   "10690755": {
@@ -4506,14 +5377,15 @@
   "10716478": {
    "name": "Hermit Peak Loop via Beaver Creek",
    "usfs": {
+    "223": "name",
     "247": "name"
    }
   },
   "10721000": {
    "name": "San Leonardo Lake, Sheepshead Peak, and Trampas Lakes Loop",
    "usfs": {
-    "30": "name",
-    "31": "startpoint"
+    "31": "name",
+    "30": "name"
    }
   },
   "10721002": {
@@ -4537,12 +5409,15 @@
   },
   "10764557": {
    "name": "Penitente Peak via FS-150",
-   "usfs": {}
+   "usfs": {
+    "254": "startpoint"
+   }
   },
   "10764562": {
    "name": "Lake Peak via Tesuque Peak North Fork Trail",
    "usfs": {
-    "269": "name"
+    "269": "name",
+    "254": "startpoint"
    }
   },
   "10769773": {
@@ -4564,6 +5439,13 @@
    "usfs": {
     "254": "name",
     "242": "name"
+   }
+  },
+  "10941984": {
+   "name": "Horseshoe Lake",
+   "usfs": {
+    "36A": "name",
+    "19": "startpoint"
    }
   },
   "10948512": {
@@ -4594,12 +5476,15 @@
   "10970070": {
    "name": "Jack's Creek Pecos Wilderness Loop [CLOSED]",
    "usfs": {
+    "257": "name",
     "249": "startpoint"
    }
   },
   "10998067": {
    "name": "North Truchas Peak from Trampas Lakes",
-   "usfs": {}
+   "usfs": {
+    "31": "name"
+   }
   },
   "11073926": {
    "name": "Lone Pine Mesa Trail",
@@ -4637,8 +5522,10 @@
   },
   "11493294": {
    "name": "Hyde Park Falls via East Circle Trail",
-   "usfs": {}
+   "usfs": {
+    "181": "startpoint"
+   }
   }
  },
- "wilderness_avg_rating": 4.65
+ "wilderness_avg_rating": 4.64
 }

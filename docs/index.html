@@ -399,6 +399,31 @@ Promise.all([
       <text x="0" y="${H - 2}" font-size="9" fill="#898781">3★</text></svg>`;
   }
 
+  function deadfallChart(c) {
+    const annual = c.annual || {}, df = c.deadfall || {};
+    if (!Object.keys(df).length) return "";
+    const years = [];
+    for (let y = 2010; y <= new Date().getFullYear(); y++) years.push(String(y));
+    const rates = years.map(y => {
+      const n = (annual[y] || [0])[0];
+      return n ? (df[y] || 0) / n : null;
+    });
+    const maxR = Math.max(0.05, ...rates.filter(r => r != null));
+    const W = 238, H = 40, bw = W / years.length;
+    const bars = years.map((y, i) => {
+      const r = rates[i];
+      if (!r) return "";
+      const h2 = r / maxR * (H - 12);
+      return `<rect x="${(i * bw + 1).toFixed(1)}" y="${(H - h2).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h2.toFixed(1)}" rx="1.5"
+        fill="${(annual[y] || [0])[0] >= 20 ? "#9c3810" : "#d8a184"}"/>`;
+    }).join("");
+    return `<div class="ct">Deadfall mentions, % of reviews (pale = under 20 reviews that year)</div>
+      <svg width="${W}" height="${H + 12}" role="img">${bars}
+      <text x="0" y="${H + 10}" font-size="9" fill="#898781">2010</text>
+      <text x="${W}" y="${H + 10}" font-size="9" fill="#898781" text-anchor="end">${years[years.length - 1]}</text>
+      <text x="${W}" y="8" font-size="9" fill="#898781" text-anchor="end">max ${(maxR * 100).toFixed(0)}%</text></svg>`;
+  }
+
   function showInfo(no) {
     const c = cond[no];
     const meta = Object.values(info).find(v => v.no === no);
@@ -416,6 +441,7 @@ Promise.all([
         ${flags ? `<div class="warn">⚠ ${flags}</div>` : ""}
         <div class="ct">Reviews per year (dotted = full-year estimate from YTD pace)</div>${barChart(c.annual || {})}
         <div class="ct">Avg rating by year (hollow = under 10 reviews; dashes = wilderness avg ${wildAvg}★)</div>${ratingChart(c.annual || {})}
+        ${deadfallChart(c)}
         <div class="ct">Last 6 months — ${r6.n || 0} reviews${r6.rating ? ` · ${r6.rating}★` : ""}</div>
         <div class="theme">${themes || "no condition mentions"}</div>`;
     }

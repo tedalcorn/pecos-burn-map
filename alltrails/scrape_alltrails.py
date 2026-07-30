@@ -34,7 +34,7 @@ PER_PAGE = 50
 # Pecos Wilderness bbox (wilderness +0.06°, matches fetch_data.py AOI)
 BBOX = {"xmin": -105.935, "ymin": 35.647, "xmax": -105.331, "ymax": 36.132}
 # keep routes whose start point is within this many degrees of the wilderness polygon
-WILD_DIST = 0.03
+WILD_DIST = 0.06
 WILDERNESS_GEOJSON = HERE.parent / "docs" / "data" / "wilderness.geojson"
 
 

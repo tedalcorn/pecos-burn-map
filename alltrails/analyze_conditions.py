@@ -32,7 +32,7 @@ DB = HERE / "alltrails.db"
 TRAILS_GJ = HERE.parent / "docs" / "data" / "trails.geojson"
 OUT = HERE.parent / "docs" / "data" / "conditions.json"
 
-START_MATCH_DEG = 0.0025   # ~250 m
+START_MATCH_DEG = 0.0055   # ~600 m — AllTrails start pins drift from the real trailhead
 RECENT_MONTHS = 12
 MIN_MENTIONS_TO_FLAG = 4
 FLAG_RATIO = 2.0           # recent rate must exceed baseline × this
@@ -106,8 +106,12 @@ def match_routes(con, usfs):
         for no, tname in name_index.items():
             if no in got:
                 continue
-            variants = {tname, tname.replace(" ", "")}
-            if any(re.search(rf"\b{re.escape(v)}\b", up) for v in variants):
+            # tolerate spacing ("SKY LINE"/Skyline), apostrophes (Jack's/JACKS),
+            # and per-word plural-s (HERMITS PEAK/Hermit Peak)
+            words = [re.escape(w[:-1] if w.endswith("S") else w) + "S?" for w in tname.split()]
+            pat = r"\b" + r"\s*".join(words) + r"\b"
+            targets = (up, up.replace("'", ""))
+            if any(re.search(pat, t2) for t2 in targets):
                 got[no] = "name"
         # 3. start point near a USFS trail
         pt = Point(lng, lat)
@@ -150,7 +154,7 @@ def main():
     # per-USFS monthly + annual aggregates
     monthly = defaultdict(lambda: {"n": 0, "rating_sum": 0, "rated_n": 0,
                                    "tags": defaultdict(int)})
-    annual = defaultdict(lambda: {"n": 0, "rating_sum": 0, "rated_n": 0})
+    annual = defaultdict(lambda: {"n": 0, "rating_sum": 0, "rated_n": 0, "deadfall": 0})
     all_ratings = [0, 0]
     for tid, date, rating, comment, obstacles in con.execute(
             "SELECT trail_id, date, rating, comment, obstacles FROM reviews WHERE date IS NOT NULL"):
@@ -175,6 +179,8 @@ def main():
             if rating:
                 a["rating_sum"] += rating
                 a["rated_n"] += 1
+            if "deadfall" in tags:
+                a["deadfall"] += 1
 
     now = datetime.now(timezone.utc)
     # what fraction of a year's reviews arrive by today's date, wilderness-wide
@@ -236,6 +242,8 @@ def main():
         cy = str(now.year)
         if cy in years and ytd_fraction:
             years[cy] = years[cy][:2] + [round(years[cy][0] / ytd_fraction)]
+        deadfall_years = {yr: a["deadfall"] for (n2, yr), a in annual.items()
+                          if n2 == no and yr >= "2010" and a["deadfall"]}
         # last-6-months theme summary
         yms6 = recent_yms[-6:]
         r6 = [b for ym, b in rows.items() if ym in yms6]
@@ -251,7 +259,7 @@ def main():
             "rating_recent": round(r_rating, 2) if r_n else None,
             "rating_prior": round(p_rating, 2) if p_n else None,
             "tags": tag_stats, "flags": flags,
-            "annual": years,
+            "annual": years, "deadfall": deadfall_years,
             "recent6": {"n": n6,
                         "rating": round(sum(b["rating_sum"] for b in r6) / rated6, 2) if rated6 else None,
                         "tags": {t: c for t, c in sorted(tags6.items(), key=lambda x: -x[1]) if c > 0}},
