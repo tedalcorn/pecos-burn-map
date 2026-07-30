@@ -11,13 +11,16 @@ Run: python3 scripts/fetch_data.py
 Writes into docs/data/ plus meta.json with the fetch timestamp.
 """
 
+import io
 import json
+import math
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+from PIL import Image
 from shapely.geometry import shape, mapping
 
 OUT = Path(__file__).resolve().parent.parent / "docs" / "data"
@@ -47,10 +50,16 @@ def query_all(url, params):
     offset = 0
     while True:
         p = dict(params, f="geojson", resultOffset=offset, resultRecordCount=1000)
-        r = requests.get(url, params=p, timeout=120)
-        r.raise_for_status()
-        data = r.json()
-        if "error" in data:
+        for attempt in range(4):
+            r = requests.get(url, params=p, timeout=120)
+            r.raise_for_status()
+            data = r.json()
+            if "error" not in data:
+                break
+            if data["error"].get("code") == 429 and attempt < 3:
+                log(f"  rate-limited, waiting 70s (attempt {attempt + 1})")
+                time.sleep(70)
+                continue
             raise RuntimeError(f"{url}: {data['error']}")
         batch = data.get("features", [])
         features.extend(batch)
@@ -73,6 +82,102 @@ def simplify_features(features, tol=SIMPLIFY_TOL):
             pass  # keep original geometry if simplification chokes
         out.append(f)
     return out
+
+
+def geo_miles(coords):
+    total = 0.0
+    for a, b in zip(coords, coords[1:]):
+        dx = (a[0] - b[0]) * 111320 * math.cos(math.radians((a[1] + b[1]) / 2))
+        dy = (a[1] - b[1]) * 110540
+        total += math.hypot(dx, dy)
+    return total / 1609.34
+
+
+def node_trail_network(features):
+    """Split trail lines at every junction so each feature is one edge of the
+    network (junction-to-junction). Raw USFS features are arbitrary chunks —
+    Skyline arrives as a single 43-mile line — which makes segment-level
+    interaction (the map's route builder) useless without this."""
+    from shapely.geometry import LineString, Point
+    from shapely.ops import unary_union, nearest_points
+    lines = []
+    for f in features:
+        g = shape(f["geometry"])
+        for part in getattr(g, "geoms", [g]):
+            lines.append((part, f["properties"]))
+
+    # Near-miss junctions: a trail's endpoint often sits a few meters off the
+    # line it meets (digitization offset), so the union would never split
+    # there. Snap endpoints onto any other line within ~25 m first.
+    SNAP = 0.00022
+    all_union = unary_union([ln for ln, _ in lines])
+    snapped = []
+    for ln, props in lines:
+        coords = list(ln.coords)
+        for idx in (0, -1):
+            pt = Point(coords[idx][:2])
+            others = [o for o, _ in lines if o is not ln and o.distance(pt) < SNAP]
+            if others:
+                target = nearest_points(pt, unary_union(others))[1]
+                if 0 < pt.distance(target) <= SNAP:
+                    coords[idx] = (target.x, target.y)
+        snapped.append((LineString(coords), props))
+    lines = snapped
+
+    noded = unary_union([ln for ln, _ in lines])
+    pieces = list(getattr(noded, "geoms", [noded]))
+    out = []
+    for piece in pieces:
+        mid = piece.interpolate(0.5, normalized=True)
+        parent = min(lines, key=lambda lp: lp[0].distance(mid))
+        if parent[0].distance(mid) > 1e-6:
+            continue
+        miles = round(geo_miles(list(piece.coords)), 3)
+        if miles < 0.03:
+            continue  # junction slivers; the map's connect tolerance bridges them
+        props = dict(parent[1])
+        props["gis_miles"] = miles  # API returns lowercase keys
+        out.append({"type": "Feature", "properties": props,
+                    "geometry": mapping(piece)})
+    log(f"  noded {len(features)} features -> {len(out)} junction-to-junction edges")
+    return out
+
+
+class Elevation:
+    """Vertex elevations from AWS's public Terrarium terrain tiles (z13, ~19 m/px)."""
+
+    Z = 13
+    URL = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+
+    def __init__(self):
+        self.tiles = {}
+
+    def _tile(self, tx, ty):
+        if (tx, ty) not in self.tiles:
+            r = requests.get(self.URL.format(z=self.Z, x=tx, y=ty), timeout=60)
+            r.raise_for_status()
+            self.tiles[(tx, ty)] = Image.open(io.BytesIO(r.content)).load()
+        return self.tiles[(tx, ty)]
+
+    def at(self, lng, lat):
+        n = 2 ** self.Z
+        fx = (lng + 180) / 360 * n
+        fy = (1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2 * n
+        tx, ty = int(fx), int(fy)
+        px = min(255, int((fx - tx) * 256))
+        py = min(255, int((fy - ty) * 256))
+        r, g, b = self._tile(tx, ty)[px, py][:3]
+        return round((r * 256 + g + b / 256) - 32768)
+
+    def enrich(self, features):
+        """Append elevation (m) as the z-coordinate of every vertex."""
+        def add_z(coords):
+            if coords and isinstance(coords[0], (int, float)):
+                return [coords[0], coords[1], self.at(coords[0], coords[1])]
+            return [add_z(c) for c in coords]
+        for f in features:
+            f["geometry"]["coordinates"] = add_z(f["geometry"]["coordinates"])
+        log(f"  elevation: sampled via {len(self.tiles)} terrain tiles")
 
 
 def round_coords(obj, ndigits=5):
@@ -136,7 +241,10 @@ def main():
         where="1=1",
         outFields="TRAIL_NAME,TRAIL_NO,TRAIL_TYPE,GIS_MILES,TRAIL_SURFACE",
     ))
-    write_geojson("trails", simplify_features(trails, tol=0.0001))
+    trails = simplify_features(trails, tol=0.0001)
+    trails = node_trail_network(trails)
+    Elevation().enrich(trails)
+    write_geojson("trails", trails)
 
     log("4/6 Fire perimeter history (all years)")
     hist = query_all(FIRE_HISTORY_URL, dict(geo_params,

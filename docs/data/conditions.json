@@ -1,0 +1,2222 @@
+{
+ "updated": "2026-07-30T17:17:35+00:00",
+ "usfs": {
+  "150": {
+   "name": "Borrego",
+   "reviews_recent": 557,
+   "reviews_total": 3399,
+   "rating_recent": 4.69,
+   "rating_prior": 4.65,
+   "tags": {
+    "deadfall": {
+     "recent": 2,
+     "recent_rate": 0.004,
+     "baseline_rate": 0.006
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "overgrown": {
+     "recent": 3,
+     "recent_rate": 0.005,
+     "baseline_rate": 0.001
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "snow_ice": {
+     "recent": 24,
+     "recent_rate": 0.043,
+     "baseline_rate": 0.048
+    },
+    "mud": {
+     "recent": 18,
+     "recent_rate": 0.032,
+     "baseline_rate": 0.012
+    },
+    "bugs": {
+     "recent": 13,
+     "recent_rate": 0.023,
+     "baseline_rate": 0.01
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.0
+    },
+    "maintained": {
+     "recent": 45,
+     "recent_rate": 0.081,
+     "baseline_rate": 0.036
+    }
+   },
+   "flags": []
+  },
+  "152": {
+   "name": "Tesuque Creek",
+   "reviews_recent": 397,
+   "reviews_total": 2244,
+   "rating_recent": 4.65,
+   "rating_prior": 4.59,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.003,
+     "baseline_rate": 0.003
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.006
+    },
+    "snow_ice": {
+     "recent": 32,
+     "recent_rate": 0.081,
+     "baseline_rate": 0.065
+    },
+    "mud": {
+     "recent": 21,
+     "recent_rate": 0.053,
+     "baseline_rate": 0.018
+    },
+    "bugs": {
+     "recent": 2,
+     "recent_rate": 0.005,
+     "baseline_rate": 0.01
+    },
+    "maintained": {
+     "recent": 28,
+     "recent_rate": 0.071,
+     "baseline_rate": 0.028
+    }
+   },
+   "flags": []
+  },
+  "155": {
+   "name": "Rio Medio",
+   "reviews_recent": 4,
+   "reviews_total": 14,
+   "rating_recent": 2.5,
+   "rating_prior": 3.4,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.25,
+     "baseline_rate": 0.4
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.1
+    },
+    "overgrown": {
+     "recent": 2,
+     "recent_rate": 0.5,
+     "baseline_rate": 0.2
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.2
+    },
+    "mud": {
+     "recent": 1,
+     "recent_rate": 0.25,
+     "baseline_rate": 0.0
+    },
+    "bugs": {
+     "recent": 2,
+     "recent_rate": 0.5,
+     "baseline_rate": 0.0
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.1
+    }
+   },
+   "flags": []
+  },
+  "160": {
+   "name": "Rio Nambe",
+   "reviews_recent": 2,
+   "reviews_total": 13,
+   "rating_recent": 4.0,
+   "rating_prior": 3.82,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.091
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.091
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.091
+    }
+   },
+   "flags": []
+  },
+  "163": {
+   "name": "Rio En Medio",
+   "reviews_recent": 58,
+   "reviews_total": 272,
+   "rating_recent": 4.74,
+   "rating_prior": 4.63,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.019
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.009
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.009
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.009
+    },
+    "snow_ice": {
+     "recent": 1,
+     "recent_rate": 0.017,
+     "baseline_rate": 0.028
+    },
+    "mud": {
+     "recent": 3,
+     "recent_rate": 0.052,
+     "baseline_rate": 0.009
+    },
+    "bugs": {
+     "recent": 5,
+     "recent_rate": 0.086,
+     "baseline_rate": 0.014
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.005
+    },
+    "maintained": {
+     "recent": 3,
+     "recent_rate": 0.052,
+     "baseline_rate": 0.009
+    }
+   },
+   "flags": []
+  },
+  "175": {
+   "name": "Baldy",
+   "reviews_recent": 179,
+   "reviews_total": 1263,
+   "rating_recent": 4.85,
+   "rating_prior": 4.76,
+   "tags": {
+    "deadfall": {
+     "recent": 2,
+     "recent_rate": 0.011,
+     "baseline_rate": 0.013
+    },
+    "washout": {
+     "recent": 1,
+     "recent_rate": 0.006,
+     "baseline_rate": 0.001
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.003
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.012
+    },
+    "snow_ice": {
+     "recent": 14,
+     "recent_rate": 0.078,
+     "baseline_rate": 0.098
+    },
+    "mud": {
+     "recent": 4,
+     "recent_rate": 0.022,
+     "baseline_rate": 0.019
+    },
+    "bugs": {
+     "recent": 7,
+     "recent_rate": 0.039,
+     "baseline_rate": 0.016
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.006
+    },
+    "maintained": {
+     "recent": 15,
+     "recent_rate": 0.084,
+     "baseline_rate": 0.056
+    }
+   },
+   "flags": []
+  },
+  "181": {
+   "name": "Black Canyon",
+   "reviews_recent": 93,
+   "reviews_total": 739,
+   "rating_recent": 4.65,
+   "rating_prior": 4.43,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.011,
+     "baseline_rate": 0.005
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.002
+    },
+    "snow_ice": {
+     "recent": 1,
+     "recent_rate": 0.011,
+     "baseline_rate": 0.054
+    },
+    "mud": {
+     "recent": 2,
+     "recent_rate": 0.022,
+     "baseline_rate": 0.0
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.005
+    },
+    "maintained": {
+     "recent": 6,
+     "recent_rate": 0.065,
+     "baseline_rate": 0.04
+    }
+   },
+   "flags": []
+  },
+  "182": {
+   "name": "Bear Wallow",
+   "reviews_recent": 493,
+   "reviews_total": 3006,
+   "rating_recent": 4.7,
+   "rating_prior": 4.68,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.002,
+     "baseline_rate": 0.004
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.0
+    },
+    "snow_ice": {
+     "recent": 21,
+     "recent_rate": 0.043,
+     "baseline_rate": 0.047
+    },
+    "mud": {
+     "recent": 16,
+     "recent_rate": 0.032,
+     "baseline_rate": 0.011
+    },
+    "bugs": {
+     "recent": 10,
+     "recent_rate": 0.02,
+     "baseline_rate": 0.01
+    },
+    "maintained": {
+     "recent": 43,
+     "recent_rate": 0.087,
+     "baseline_rate": 0.035
+    }
+   },
+   "flags": []
+  },
+  "214": {
+   "name": "Lone Pine Mesa",
+   "reviews_recent": 6,
+   "reviews_total": 14,
+   "rating_recent": 4.17,
+   "rating_prior": 3.88,
+   "tags": {
+    "burn": {
+     "recent": 1,
+     "recent_rate": 0.167,
+     "baseline_rate": 0.0
+    }
+   },
+   "flags": []
+  },
+  "224": {
+   "name": "Valdez",
+   "reviews_recent": 3,
+   "reviews_total": 30,
+   "rating_recent": 4.67,
+   "rating_prior": 4.26,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.333,
+     "baseline_rate": 0.0
+    },
+    "overgrown": {
+     "recent": 1,
+     "recent_rate": 0.333,
+     "baseline_rate": 0.0
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.074
+    },
+    "mud": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.037
+    },
+    "burn": {
+     "recent": 1,
+     "recent_rate": 0.333,
+     "baseline_rate": 0.0
+    },
+    "maintained": {
+     "recent": 1,
+     "recent_rate": 0.333,
+     "baseline_rate": 0.074
+    }
+   },
+   "flags": []
+  },
+  "24": {
+   "name": "Middle Fork Santa Barbara",
+   "reviews_recent": 52,
+   "reviews_total": 393,
+   "rating_recent": 4.71,
+   "rating_prior": 4.57,
+   "tags": {
+    "deadfall": {
+     "recent": 7,
+     "recent_rate": 0.135,
+     "baseline_rate": 0.065
+    },
+    "washout": {
+     "recent": 1,
+     "recent_rate": 0.019,
+     "baseline_rate": 0.009
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.006
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.015
+    },
+    "snow_ice": {
+     "recent": 3,
+     "recent_rate": 0.058,
+     "baseline_rate": 0.05
+    },
+    "mud": {
+     "recent": 2,
+     "recent_rate": 0.038,
+     "baseline_rate": 0.047
+    },
+    "bugs": {
+     "recent": 1,
+     "recent_rate": 0.019,
+     "baseline_rate": 0.021
+    },
+    "burn": {
+     "recent": 1,
+     "recent_rate": 0.019,
+     "baseline_rate": 0.003
+    },
+    "maintained": {
+     "recent": 1,
+     "recent_rate": 0.019,
+     "baseline_rate": 0.05
+    }
+   },
+   "flags": [
+    "deadfall"
+   ]
+  },
+  "240": {
+   "name": "Las Trampas",
+   "reviews_recent": 8,
+   "reviews_total": 20,
+   "rating_recent": 3.75,
+   "rating_prior": 4.33,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.125,
+     "baseline_rate": 0.0
+    },
+    "washout": {
+     "recent": 1,
+     "recent_rate": 0.125,
+     "baseline_rate": 0.0
+    },
+    "bugs": {
+     "recent": 1,
+     "recent_rate": 0.125,
+     "baseline_rate": 0.0
+    }
+   },
+   "flags": []
+  },
+  "242": {
+   "name": "Lake Katherine",
+   "reviews_recent": 157,
+   "reviews_total": 995,
+   "rating_recent": 4.83,
+   "rating_prior": 4.73,
+   "tags": {
+    "deadfall": {
+     "recent": 4,
+     "recent_rate": 0.025,
+     "baseline_rate": 0.021
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "overgrown": {
+     "recent": 1,
+     "recent_rate": 0.006,
+     "baseline_rate": 0.005
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.019
+    },
+    "snow_ice": {
+     "recent": 13,
+     "recent_rate": 0.083,
+     "baseline_rate": 0.103
+    },
+    "mud": {
+     "recent": 6,
+     "recent_rate": 0.038,
+     "baseline_rate": 0.016
+    },
+    "bugs": {
+     "recent": 11,
+     "recent_rate": 0.07,
+     "baseline_rate": 0.013
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "maintained": {
+     "recent": 19,
+     "recent_rate": 0.121,
+     "baseline_rate": 0.06
+    }
+   },
+   "flags": []
+  },
+  "247": {
+   "name": "Beaver Creek",
+   "reviews_recent": 25,
+   "reviews_total": 386,
+   "rating_recent": 4.52,
+   "rating_prior": 4.52,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.04,
+     "baseline_rate": 0.053
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.014
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.019
+    },
+    "snow_ice": {
+     "recent": 1,
+     "recent_rate": 0.04,
+     "baseline_rate": 0.069
+    },
+    "mud": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.019
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "burn": {
+     "recent": 2,
+     "recent_rate": 0.08,
+     "baseline_rate": 0.011
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.047
+    }
+   },
+   "flags": []
+  },
+  "249": {
+   "name": "Hamilton Mesa",
+   "reviews_recent": 47,
+   "reviews_total": 396,
+   "rating_recent": 4.47,
+   "rating_prior": 4.51,
+   "tags": {
+    "deadfall": {
+     "recent": 6,
+     "recent_rate": 0.128,
+     "baseline_rate": 0.066
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.003
+    },
+    "overgrown": {
+     "recent": 4,
+     "recent_rate": 0.085,
+     "baseline_rate": 0.009
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.014
+    },
+    "snow_ice": {
+     "recent": 2,
+     "recent_rate": 0.043,
+     "baseline_rate": 0.04
+    },
+    "mud": {
+     "recent": 6,
+     "recent_rate": 0.128,
+     "baseline_rate": 0.034
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.006
+    },
+    "burn": {
+     "recent": 2,
+     "recent_rate": 0.043,
+     "baseline_rate": 0.02
+    },
+    "maintained": {
+     "recent": 2,
+     "recent_rate": 0.043,
+     "baseline_rate": 0.037
+    }
+   },
+   "flags": [
+    "overgrown"
+   ]
+  },
+  "25": {
+   "name": "West Fork Santa Barbara",
+   "reviews_recent": 24,
+   "reviews_total": 394,
+   "rating_recent": 4.33,
+   "rating_prior": 4.59,
+   "tags": {
+    "deadfall": {
+     "recent": 2,
+     "recent_rate": 0.083,
+     "baseline_rate": 0.081
+    },
+    "overgrown": {
+     "recent": 1,
+     "recent_rate": 0.042,
+     "baseline_rate": 0.019
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.024
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.078
+    },
+    "mud": {
+     "recent": 1,
+     "recent_rate": 0.042,
+     "baseline_rate": 0.03
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.024
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.076
+    }
+   },
+   "flags": []
+  },
+  "254": {
+   "name": "Winsor",
+   "reviews_recent": 2231,
+   "reviews_total": 14306,
+   "rating_recent": 4.79,
+   "rating_prior": 4.67,
+   "tags": {
+    "deadfall": {
+     "recent": 31,
+     "recent_rate": 0.014,
+     "baseline_rate": 0.016
+    },
+    "washout": {
+     "recent": 2,
+     "recent_rate": 0.001,
+     "baseline_rate": 0.002
+    },
+    "overgrown": {
+     "recent": 4,
+     "recent_rate": 0.002,
+     "baseline_rate": 0.003
+    },
+    "hard_to_follow": {
+     "recent": 15,
+     "recent_rate": 0.007,
+     "baseline_rate": 0.013
+    },
+    "snow_ice": {
+     "recent": 179,
+     "recent_rate": 0.08,
+     "baseline_rate": 0.082
+    },
+    "mud": {
+     "recent": 100,
+     "recent_rate": 0.045,
+     "baseline_rate": 0.015
+    },
+    "bugs": {
+     "recent": 94,
+     "recent_rate": 0.042,
+     "baseline_rate": 0.017
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.0
+    },
+    "maintained": {
+     "recent": 154,
+     "recent_rate": 0.069,
+     "baseline_rate": 0.038
+    }
+   },
+   "flags": []
+  },
+  "255": {
+   "name": "Norski",
+   "reviews_recent": 188,
+   "reviews_total": 859,
+   "rating_recent": 4.82,
+   "rating_prior": 4.69,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.009
+    },
+    "snow_ice": {
+     "recent": 5,
+     "recent_rate": 0.027,
+     "baseline_rate": 0.031
+    },
+    "mud": {
+     "recent": 2,
+     "recent_rate": 0.011,
+     "baseline_rate": 0.012
+    },
+    "bugs": {
+     "recent": 2,
+     "recent_rate": 0.011,
+     "baseline_rate": 0.007
+    },
+    "maintained": {
+     "recent": 12,
+     "recent_rate": 0.064,
+     "baseline_rate": 0.034
+    }
+   },
+   "flags": []
+  },
+  "257": {
+   "name": "Jacks Creek",
+   "reviews_recent": 1,
+   "reviews_total": 15,
+   "rating_recent": 5.0,
+   "rating_prior": 4.64,
+   "tags": {},
+   "flags": []
+  },
+  "259": {
+   "name": "Dockweiler",
+   "reviews_recent": 5,
+   "reviews_total": 38,
+   "rating_recent": 4.2,
+   "rating_prior": 3.88,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.061
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.03
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.03
+    },
+    "mud": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.03
+    }
+   },
+   "flags": []
+  },
+  "260": {
+   "name": "Larkspur",
+   "reviews_recent": 11,
+   "reviews_total": 103,
+   "rating_recent": 4.55,
+   "rating_prior": 4.39,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.091,
+     "baseline_rate": 0.043
+    },
+    "overgrown": {
+     "recent": 1,
+     "recent_rate": 0.091,
+     "baseline_rate": 0.011
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "mud": {
+     "recent": 2,
+     "recent_rate": 0.182,
+     "baseline_rate": 0.033
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.011
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.022
+    },
+    "maintained": {
+     "recent": 1,
+     "recent_rate": 0.091,
+     "baseline_rate": 0.0
+    }
+   },
+   "flags": []
+  },
+  "266": {
+   "name": "Middle Fork",
+   "reviews_recent": 44,
+   "reviews_total": 379,
+   "rating_recent": 4.75,
+   "rating_prior": 4.56,
+   "tags": {
+    "deadfall": {
+     "recent": 4,
+     "recent_rate": 0.091,
+     "baseline_rate": 0.066
+    },
+    "washout": {
+     "recent": 1,
+     "recent_rate": 0.023,
+     "baseline_rate": 0.009
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.009
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.012
+    },
+    "snow_ice": {
+     "recent": 1,
+     "recent_rate": 0.023,
+     "baseline_rate": 0.054
+    },
+    "mud": {
+     "recent": 2,
+     "recent_rate": 0.045,
+     "baseline_rate": 0.051
+    },
+    "bugs": {
+     "recent": 1,
+     "recent_rate": 0.023,
+     "baseline_rate": 0.021
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.003
+    },
+    "maintained": {
+     "recent": 1,
+     "recent_rate": 0.023,
+     "baseline_rate": 0.054
+    }
+   },
+   "flags": []
+  },
+  "267": {
+   "name": "Lake Johnson",
+   "reviews_recent": 8,
+   "reviews_total": 68,
+   "rating_recent": 4.75,
+   "rating_prior": 4.62,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.125,
+     "baseline_rate": 0.133
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.017
+    },
+    "snow_ice": {
+     "recent": 1,
+     "recent_rate": 0.125,
+     "baseline_rate": 0.2
+    },
+    "mud": {
+     "recent": 1,
+     "recent_rate": 0.125,
+     "baseline_rate": 0.0
+    },
+    "bugs": {
+     "recent": 2,
+     "recent_rate": 0.25,
+     "baseline_rate": 0.0
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.067
+    }
+   },
+   "flags": []
+  },
+  "269": {
+   "name": "North Fork",
+   "reviews_recent": 152,
+   "reviews_total": 1088,
+   "rating_recent": 4.74,
+   "rating_prior": 4.64,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.004
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.01
+    },
+    "snow_ice": {
+     "recent": 12,
+     "recent_rate": 0.079,
+     "baseline_rate": 0.066
+    },
+    "mud": {
+     "recent": 12,
+     "recent_rate": 0.079,
+     "baseline_rate": 0.017
+    },
+    "bugs": {
+     "recent": 2,
+     "recent_rate": 0.013,
+     "baseline_rate": 0.009
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "maintained": {
+     "recent": 9,
+     "recent_rate": 0.059,
+     "baseline_rate": 0.028
+    }
+   },
+   "flags": []
+  },
+  "27": {
+   "name": "Indian Creek",
+   "reviews_recent": 13,
+   "reviews_total": 141,
+   "rating_recent": 4.62,
+   "rating_prior": 4.35,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.047
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.016
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.016
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.047
+    },
+    "mud": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.008
+    },
+    "bugs": {
+     "recent": 1,
+     "recent_rate": 0.077,
+     "baseline_rate": 0.0
+    },
+    "maintained": {
+     "recent": 1,
+     "recent_rate": 0.077,
+     "baseline_rate": 0.023
+    }
+   },
+   "flags": []
+  },
+  "271": {
+   "name": "Winsor Ridge",
+   "reviews_recent": 20,
+   "reviews_total": 234,
+   "rating_recent": 4.75,
+   "rating_prior": 4.49,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.15
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.009
+    },
+    "overgrown": {
+     "recent": 1,
+     "recent_rate": 0.05,
+     "baseline_rate": 0.033
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.042
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.103
+    },
+    "mud": {
+     "recent": 3,
+     "recent_rate": 0.15,
+     "baseline_rate": 0.042
+    },
+    "bugs": {
+     "recent": 1,
+     "recent_rate": 0.05,
+     "baseline_rate": 0.023
+    },
+    "maintained": {
+     "recent": 2,
+     "recent_rate": 0.1,
+     "baseline_rate": 0.056
+    }
+   },
+   "flags": []
+  },
+  "28": {
+   "name": "Bear Mountain",
+   "reviews_recent": 5,
+   "reviews_total": 56,
+   "rating_recent": 4.8,
+   "rating_prior": 4.45,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.039
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.02
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.078
+    },
+    "mud": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.02
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.059
+    }
+   },
+   "flags": []
+  },
+  "283": {
+   "name": "Holy Ghost",
+   "reviews_recent": 43,
+   "reviews_total": 461,
+   "rating_recent": 4.56,
+   "rating_prior": 4.55,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.014
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.01
+    },
+    "overgrown": {
+     "recent": 3,
+     "recent_rate": 0.07,
+     "baseline_rate": 0.005
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.022
+    },
+    "mud": {
+     "recent": 4,
+     "recent_rate": 0.093,
+     "baseline_rate": 0.017
+    },
+    "bugs": {
+     "recent": 3,
+     "recent_rate": 0.07,
+     "baseline_rate": 0.012
+    },
+    "maintained": {
+     "recent": 3,
+     "recent_rate": 0.07,
+     "baseline_rate": 0.041
+    }
+   },
+   "flags": []
+  },
+  "288": {
+   "name": "Cave Creek",
+   "reviews_recent": 115,
+   "reviews_total": 834,
+   "rating_recent": 4.77,
+   "rating_prior": 4.67,
+   "tags": {
+    "deadfall": {
+     "recent": 1,
+     "recent_rate": 0.009,
+     "baseline_rate": 0.017
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "overgrown": {
+     "recent": 1,
+     "recent_rate": 0.009,
+     "baseline_rate": 0.003
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.003
+    },
+    "snow_ice": {
+     "recent": 3,
+     "recent_rate": 0.026,
+     "baseline_rate": 0.007
+    },
+    "mud": {
+     "recent": 9,
+     "recent_rate": 0.078,
+     "baseline_rate": 0.047
+    },
+    "bugs": {
+     "recent": 3,
+     "recent_rate": 0.026,
+     "baseline_rate": 0.021
+    },
+    "maintained": {
+     "recent": 4,
+     "recent_rate": 0.035,
+     "baseline_rate": 0.046
+    }
+   },
+   "flags": []
+  },
+  "296": {
+   "name": "Stewart Lake",
+   "reviews_recent": 176,
+   "reviews_total": 1094,
+   "rating_recent": 4.83,
+   "rating_prior": 4.58,
+   "tags": {
+    "deadfall": {
+     "recent": 9,
+     "recent_rate": 0.051,
+     "baseline_rate": 0.096
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.004
+    },
+    "overgrown": {
+     "recent": 2,
+     "recent_rate": 0.011,
+     "baseline_rate": 0.015
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.014
+    },
+    "snow_ice": {
+     "recent": 9,
+     "recent_rate": 0.051,
+     "baseline_rate": 0.065
+    },
+    "mud": {
+     "recent": 22,
+     "recent_rate": 0.125,
+     "baseline_rate": 0.035
+    },
+    "bugs": {
+     "recent": 15,
+     "recent_rate": 0.085,
+     "baseline_rate": 0.022
+    },
+    "maintained": {
+     "recent": 18,
+     "recent_rate": 0.102,
+     "baseline_rate": 0.047
+    }
+   },
+   "flags": []
+  },
+  "30": {
+   "name": "San Leonardo",
+   "reviews_recent": 44,
+   "reviews_total": 216,
+   "rating_recent": 4.66,
+   "rating_prior": 4.49,
+   "tags": {
+    "deadfall": {
+     "recent": 4,
+     "recent_rate": 0.091,
+     "baseline_rate": 0.076
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.012
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.012
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.023
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.064
+    },
+    "mud": {
+     "recent": 2,
+     "recent_rate": 0.045,
+     "baseline_rate": 0.041
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.023
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.047
+    }
+   },
+   "flags": []
+  },
+  "31": {
+   "name": "Trampas Lake",
+   "reviews_recent": 107,
+   "reviews_total": 821,
+   "rating_recent": 4.79,
+   "rating_prior": 4.75,
+   "tags": {
+    "deadfall": {
+     "recent": 7,
+     "recent_rate": 0.065,
+     "baseline_rate": 0.052
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.008
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.007
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.015
+    },
+    "snow_ice": {
+     "recent": 12,
+     "recent_rate": 0.112,
+     "baseline_rate": 0.094
+    },
+    "mud": {
+     "recent": 13,
+     "recent_rate": 0.121,
+     "baseline_rate": 0.034
+    },
+    "bugs": {
+     "recent": 8,
+     "recent_rate": 0.075,
+     "baseline_rate": 0.021
+    },
+    "maintained": {
+     "recent": 5,
+     "recent_rate": 0.047,
+     "baseline_rate": 0.073
+    }
+   },
+   "flags": []
+  },
+  "323": {
+   "name": "Cowles Pond",
+   "reviews_recent": 3,
+   "reviews_total": 19,
+   "rating_recent": 4.33,
+   "rating_prior": 4.56,
+   "tags": {
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.062
+    }
+   },
+   "flags": []
+  },
+  "36A": {
+   "name": "Horseshoe Lake",
+   "reviews_recent": 0,
+   "reviews_total": 13,
+   "rating_recent": null,
+   "rating_prior": 3.69,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0,
+     "baseline_rate": 0.154
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0,
+     "baseline_rate": 0.077
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0,
+     "baseline_rate": 0.077
+    },
+    "mud": {
+     "recent": 0,
+     "recent_rate": 0,
+     "baseline_rate": 0.077
+    },
+    "burn": {
+     "recent": 0,
+     "recent_rate": 0,
+     "baseline_rate": 0.077
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0,
+     "baseline_rate": 0.154
+    }
+   },
+   "flags": []
+  },
+  "38": {
+   "name": "Jicarita Creek",
+   "reviews_recent": 8,
+   "reviews_total": 50,
+   "rating_recent": 4.25,
+   "rating_prior": 4.33,
+   "tags": {
+    "deadfall": {
+     "recent": 2,
+     "recent_rate": 0.25,
+     "baseline_rate": 0.0
+    }
+   },
+   "flags": []
+  },
+  "397": {
+   "name": "Pecos River",
+   "reviews_recent": 138,
+   "reviews_total": 1109,
+   "rating_recent": 4.77,
+   "rating_prior": 4.66,
+   "tags": {
+    "deadfall": {
+     "recent": 4,
+     "recent_rate": 0.029,
+     "baseline_rate": 0.025
+    },
+    "overgrown": {
+     "recent": 2,
+     "recent_rate": 0.014,
+     "baseline_rate": 0.002
+    },
+    "hard_to_follow": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.007
+    },
+    "snow_ice": {
+     "recent": 3,
+     "recent_rate": 0.022,
+     "baseline_rate": 0.008
+    },
+    "mud": {
+     "recent": 11,
+     "recent_rate": 0.08,
+     "baseline_rate": 0.041
+    },
+    "bugs": {
+     "recent": 3,
+     "recent_rate": 0.022,
+     "baseline_rate": 0.02
+    },
+    "maintained": {
+     "recent": 7,
+     "recent_rate": 0.051,
+     "baseline_rate": 0.049
+    }
+   },
+   "flags": []
+  },
+  "400": {
+   "name": "Nambe Lake",
+   "reviews_recent": 671,
+   "reviews_total": 4150,
+   "rating_recent": 4.85,
+   "rating_prior": 4.69,
+   "tags": {
+    "deadfall": {
+     "recent": 2,
+     "recent_rate": 0.003,
+     "baseline_rate": 0.005
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.002
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.001
+    },
+    "hard_to_follow": {
+     "recent": 13,
+     "recent_rate": 0.019,
+     "baseline_rate": 0.025
+    },
+    "snow_ice": {
+     "recent": 61,
+     "recent_rate": 0.091,
+     "baseline_rate": 0.097
+    },
+    "mud": {
+     "recent": 34,
+     "recent_rate": 0.051,
+     "baseline_rate": 0.017
+    },
+    "bugs": {
+     "recent": 39,
+     "recent_rate": 0.058,
+     "baseline_rate": 0.028
+    },
+    "maintained": {
+     "recent": 36,
+     "recent_rate": 0.054,
+     "baseline_rate": 0.035
+    }
+   },
+   "flags": []
+  },
+  "403": {
+   "name": "Lower Nambe",
+   "reviews_recent": 4,
+   "reviews_total": 63,
+   "rating_recent": 5.0,
+   "rating_prior": 4.27,
+   "tags": {
+    "deadfall": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.068
+    },
+    "washout": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.017
+    },
+    "overgrown": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.017
+    },
+    "snow_ice": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.034
+    },
+    "bugs": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.034
+    },
+    "maintained": {
+     "recent": 0,
+     "recent_rate": 0.0,
+     "baseline_rate": 0.034
+    }
+   },
+   "flags": []
+  }
+ },
+ "routes": {
+  "10001727": {
+   "name": "Borrego (150), Winsor (254) and Bear Wallow (182) Trail Loop",
+   "usfs": {
+    "150": "number",
+    "254": "number",
+    "182": "number"
+   }
+  },
+  "10004807": {
+   "name": "Santa Fe Ski Basin",
+   "usfs": {
+    "254": "startpoint"
+   }
+  },
+  "10009550": {
+   "name": "Trampas Lakes Trail",
+   "usfs": {
+    "31": "startpoint"
+   }
+  },
+  "10010253": {
+   "name": "Winsor Trail: Aspen Basin to Winsor Road",
+   "usfs": {
+    "254": "name"
+   }
+  },
+  "10016295": {
+   "name": "Norski Cross Country Ski Track",
+   "usfs": {
+    "255": "name"
+   }
+  },
+  "10018350": {
+   "name": "Holy Ghost Creek Trail",
+   "usfs": {
+    "283": "name"
+   }
+  },
+  "10022497": {
+   "name": "Hermit Peak Trail",
+   "usfs": {
+    "247": "startpoint"
+   }
+  },
+  "10026690": {
+   "name": "Aspen Ranch Loop",
+   "usfs": {
+    "254": "startpoint"
+   }
+  },
+  "10026691": {
+   "name": "West and East Circle Loop",
+   "usfs": {}
+  },
+  "10026692": {
+   "name": "Winsor Trail to Big Tesuque Canyon",
+   "usfs": {
+    "254": "name"
+   }
+  },
+  "10026697": {
+   "name": "Stewart Lake via Winsor Trail, Skyline Trail, and Winsor Ridge",
+   "usfs": {
+    "254": "name",
+    "271": "name",
+    "296": "name"
+   }
+  },
+  "10028381": {
+   "name": "Black Canyon Trail",
+   "usfs": {
+    "181": "name"
+   }
+  },
+  "10028419": {
+   "name": "Winsor Trail to Spirit Lake",
+   "usfs": {
+    "254": "name"
+   }
+  },
+  "10030667": {
+   "name": "Lake Katherine via Winsor Trail",
+   "usfs": {
+    "254": "name",
+    "242": "name"
+   }
+  },
+  "10032887": {
+   "name": "Tesuque Creek North Fork Trail",
+   "usfs": {
+    "152": "name",
+    "269": "name"
+   }
+  },
+  "10032891": {
+   "name": "Hamilton Mesa to Pecos Trail",
+   "usfs": {
+    "249": "name"
+   }
+  },
+  "10033979": {
+   "name": "Raven's Ridge Trail",
+   "usfs": {
+    "254": "startpoint"
+   }
+  },
+  "10033980": {
+   "name": "Tesuque Peak via Tesuque Creek North Fork Trail",
+   "usfs": {
+    "152": "name",
+    "269": "name"
+   }
+  },
+  "10035504": {
+   "name": "Borrego Trail",
+   "usfs": {
+    "150": "name"
+   }
+  },
+  "10037042": {
+   "name": "Jack's Creek Trail [CLOSED]",
+   "usfs": {
+    "249": "startpoint"
+   }
+  },
+  "10037043": {
+   "name": "Dockweiler Trail",
+   "usfs": {
+    "259": "name",
+    "288": "startpoint"
+   }
+  },
+  "10038087": {
+   "name": "Nambe Lake Trail",
+   "usfs": {
+    "400": "name",
+    "254": "startpoint"
+   }
+  },
+  "10038090": {
+   "name": "San Leonardo Lakes Trail",
+   "usfs": {
+    "30": "name"
+   }
+  },
+  "10039619": {
+   "name": "Deception Peak and Lake Peak",
+   "usfs": {
+    "254": "startpoint"
+   }
+  },
+  "10042106": {
+   "name": "Pecos Baldy Lake [CLOSED]",
+   "usfs": {
+    "175": "name",
+    "25": "startpoint"
+   }
+  },
+  "10258472": {
+   "name": "Tesuque Peak via FS-150",
+   "usfs": {}
+  },
+  "10258484": {
+   "name": "Cave Creek Trail",
+   "usfs": {
+    "288": "name",
+    "397": "startpoint"
+   }
+  },
+  "10264017": {
+   "name": "Santa Fe Baldy via Winsor Trail",
+   "usfs": {
+    "254": "name",
+    "175": "name"
+   }
+  },
+  "10264298": {
+   "name": "Rio Santa Barbara Middle Fork and West Fork",
+   "usfs": {
+    "266": "name",
+    "24": "startpoint"
+   }
+  },
+  "10267474": {
+   "name": "Alamos Vista Trail",
+   "usfs": {}
+  },
+  "10268399": {
+   "name": "Hamilton Mesa #249 and Larkspur #260",
+   "usfs": {
+    "249": "name",
+    "260": "name"
+   }
+  },
+  "10268400": {
+   "name": "Mora Flats",
+   "usfs": {
+    "249": "startpoint"
+   }
+  },
+  "10268401": {
+   "name": "Winsor Trail #254",
+   "usfs": {
+    "254": "name"
+   }
+  },
+  "10270041": {
+   "name": "Beatty's Trail and Skyline Trail Loop [CLOSED]",
+   "usfs": {
+    "25": "startpoint"
+   }
+  },
+  "10288679": {
+   "name": "Raven's Ridge and Winsor Loop",
+   "usfs": {
+    "254": "name"
+   }
+  },
+  "10288738": {
+   "name": "Spirit Lake and Stewart Lake Loop",
+   "usfs": {
+    "296": "name",
+    "254": "startpoint"
+   }
+  },
+  "10288739": {
+   "name": "Spirit Lake, Katherine Lake, Stewart Lake, and Lake Johnson Loop",
+   "usfs": {
+    "267": "name",
+    "296": "name",
+    "254": "startpoint"
+   }
+  },
+  "10290965": {
+   "name": "Anatoli Route",
+   "usfs": {
+    "254": "startpoint"
+   }
+  },
+  "10309843": {
+   "name": "Hidden Lake Trail",
+   "usfs": {
+    "31": "startpoint"
+   }
+  },
+  "10323852": {
+   "name": "Johnson Lake Trail",
+   "usfs": {
+    "397": "startpoint"
+   }
+  },
+  "10332873": {
+   "name": "Hamilton Mesa via Iron Gate Campground",
+   "usfs": {
+    "249": "name"
+   }
+  },
+  "10338583": {
+   "name": "Big Tesuque Trail",
+   "usfs": {
+    "152": "startpoint"
+   }
+  },
+  "10346755": {
+   "name": "Beatty's Trail [CLOSED]",
+   "usfs": {
+    "397": "startpoint"
+   }
+  },
+  "10348164": {
+   "name": "Hermit Peak to Porvenir Divide Trails Loop",
+   "usfs": {
+    "247": "startpoint"
+   }
+  },
+  "10361581": {
+   "name": "Truchas Lakes [CLOSED]",
+   "usfs": {
+    "25": "startpoint"
+   }
+  },
+  "10398906": {
+   "name": "Truchas Peak Loop [CLOSED]",
+   "usfs": {
+    "397": "startpoint"
+   }
+  },
+  "10402422": {
+   "name": "Beatty's, Jack's Creek, Skyline and Pecos Trail Loop [CLOSED]",
+   "usfs": {
+    "25": "startpoint"
+   }
+  },
+  "10457624": {
+   "name": "Katherine Lake",
+   "usfs": {
+    "254": "startpoint"
+   }
+  },
+  "10477566": {
+   "name": "Lake Johnson via Skyline and Windsor Ridge Trail #271",
+   "usfs": {
+    "267": "name",
+    "323": "startpoint"
+   }
+  },
+  "10485768": {
+   "name": "Stewart Lake via Windsor Ridge Trail #271",
+   "usfs": {
+    "296": "name",
+    "254": "startpoint"
+   }
+  },
+  "10503269": {
+   "name": "Stewart Lake via Trail #261",
+   "usfs": {
+    "296": "name",
+    "254": "startpoint"
+   }
+  },
+  "10530316": {
+   "name": "Jack's Creek and Skyline Lollipop Trail [CLOSED]",
+   "usfs": {
+    "25": "startpoint"
+   }
+  },
+  "10532571": {
+   "name": "Santa Fe Overlook and Lake Peak Loop",
+   "usfs": {
+    "254": "startpoint"
+   }
+  },
+  "10533081": {
+   "name": "Tesuque and Aspen Vista Loop",
+   "usfs": {
+    "152": "startpoint"
+   }
+  },
+  "10534125": {
+   "name": "Aspen Vista to Evergreen via Ridge South of Tesuque Peak",
+   "usfs": {}
+  },
+  "10534455": {
+   "name": "Lower Nambe Loop",
+   "usfs": {
+    "403": "name",
+    "254": "startpoint"
+   }
+  },
+  "10534473": {
+   "name": "Winsor Trail and Nambe Lake Loop",
+   "usfs": {
+    "254": "name",
+    "400": "name"
+   }
+  },
+  "10537368": {
+   "name": "Lake Peak, Penitente Peak and Santa Fe Baldy Loop",
+   "usfs": {
+    "175": "name",
+    "254": "startpoint"
+   }
+  },
+  "10539989": {
+   "name": "Indian Creek Trail to Bear Mountain Trail and Intersection Viewpoint",
+   "usfs": {
+    "27": "name",
+    "28": "name"
+   }
+  },
+  "10539998": {
+   "name": "Rio Santa Barbara West, Truchas Lakes, Skyline, and Middle Fork Loop",
+   "usfs": {
+    "266": "name",
+    "24": "startpoint"
+   }
+  },
+  "10544332": {
+   "name": "Elk Mountain",
+   "usfs": {}
+  },
+  "10551858": {
+   "name": "Hamilton Mesa via Jacks Creek Campground [CLOSED]",
+   "usfs": {
+    "257": "name",
+    "249": "name"
+   }
+  },
+  "10551869": {
+   "name": "Hamilton Mesa, Larkspur and Beatty's Trail Loop [CLOSED]",
+   "usfs": {
+    "249": "name",
+    "260": "name",
+    "397": "startpoint"
+   }
+  },
+  "10555644": {
+   "name": "Big Tesuque to Aspen Basin via Winsor Trail",
+   "usfs": {
+    "254": "name",
+    "152": "startpoint"
+   }
+  },
+  "10561183": {
+   "name": "Indian Creek Trail #27",
+   "usfs": {
+    "27": "name"
+   }
+  },
+  "10569634": {
+   "name": "Skyline Trail to Pecos Trail to Winsor Ridge Trail Loop",
+   "usfs": {
+    "254": "name",
+    "271": "name"
+   }
+  },
+  "10570297": {
+   "name": "Beatty's Trail #25 to Jack's Creek Trail [CLOSED]",
+   "usfs": {
+    "397": "startpoint"
+   }
+  },
+  "10633739": {
+   "name": "Rio en Medio Trail from Aspen Basin",
+   "usfs": {
+    "163": "name",
+    "254": "startpoint"
+   }
+  },
+  "10634034": {
+   "name": "Rio Nambe Trail",
+   "usfs": {
+    "160": "name",
+    "150": "startpoint"
+   }
+  },
+  "10690755": {
+   "name": "Jicarita Peak Trail",
+   "usfs": {
+    "27": "startpoint"
+   }
+  },
+  "10692933": {
+   "name": "La Vega Meadow via Santa Fe Ski Basin",
+   "usfs": {
+    "254": "startpoint"
+   }
+  },
+  "10708445": {
+   "name": "Hamilton Mesa Rio Valdez Loop",
+   "usfs": {
+    "224": "name",
+    "249": "name"
+   }
+  },
+  "10710914": {
+   "name": "Truchas Traverse [CLOSED]",
+   "usfs": {
+    "25": "startpoint"
+   }
+  },
+  "10716478": {
+   "name": "Hermit Peak Loop via Beaver Creek",
+   "usfs": {
+    "247": "name"
+   }
+  },
+  "10721000": {
+   "name": "San Leonardo Lake, Sheepshead Peak, and Trampas Lakes Loop",
+   "usfs": {
+    "30": "name",
+    "31": "startpoint"
+   }
+  },
+  "10721002": {
+   "name": "Sheepshead Peak",
+   "usfs": {
+    "31": "startpoint"
+   }
+  },
+  "10741264": {
+   "name": "Borrego Mesa to Truchas Peak Loop",
+   "usfs": {
+    "150": "name",
+    "155": "startpoint"
+   }
+  },
+  "10758456": {
+   "name": "Pecos Traverse",
+   "usfs": {
+    "24": "startpoint"
+   }
+  },
+  "10764557": {
+   "name": "Penitente Peak via FS-150",
+   "usfs": {}
+  },
+  "10764562": {
+   "name": "Lake Peak via Tesuque Peak North Fork Trail",
+   "usfs": {
+    "269": "name"
+   }
+  },
+  "10769773": {
+   "name": "Middle Fork, North Fork and Horseshoe Lake",
+   "usfs": {
+    "36A": "name",
+    "266": "name",
+    "269": "name"
+   }
+  },
+  "10773482": {
+   "name": "North Borrego Trail 150",
+   "usfs": {
+    "150": "name"
+   }
+  },
+  "10897301": {
+   "name": "Spirit Lake and Lake Katherine via Winsor Trail",
+   "usfs": {
+    "254": "name",
+    "242": "name"
+   }
+  },
+  "10948512": {
+   "name": "Santa Fe Baldy and Lake Katherine Loop",
+   "usfs": {
+    "242": "name",
+    "175": "name",
+    "254": "startpoint"
+   }
+  },
+  "10953559": {
+   "name": "Indian Creek Trail to Ripley Point",
+   "usfs": {
+    "27": "name"
+   }
+  },
+  "10960643": {
+   "name": "Quemado Falls via FS Road 435",
+   "usfs": {}
+  },
+  "10968554": {
+   "name": "Stewart Lake via Holy Ghost",
+   "usfs": {
+    "283": "name",
+    "296": "name"
+   }
+  },
+  "10970070": {
+   "name": "Jack's Creek Pecos Wilderness Loop [CLOSED]",
+   "usfs": {
+    "249": "startpoint"
+   }
+  },
+  "10998067": {
+   "name": "North Truchas Peak from Trampas Lakes",
+   "usfs": {}
+  },
+  "11073926": {
+   "name": "Lone Pine Mesa Trail",
+   "usfs": {
+    "214": "name"
+   }
+  },
+  "11153019": {
+   "name": "Jicarita Creek Trail",
+   "usfs": {
+    "38": "name",
+    "27": "startpoint"
+   }
+  },
+  "11310906": {
+   "name": "Jicarita Creek Trail #38",
+   "usfs": {
+    "38": "name",
+    "24": "startpoint"
+   }
+  },
+  "11329260": {
+   "name": "Hyde Waterfall Trail",
+   "usfs": {}
+  },
+  "11329261": {
+   "name": "Hyde Piggyback Trail",
+   "usfs": {}
+  },
+  "11444298": {
+   "name": "Las Trampas Trail #240",
+   "usfs": {
+    "240": "name"
+   }
+  },
+  "11493294": {
+   "name": "Hyde Park Falls via East Circle Trail",
+   "usfs": {}
+  }
+ }
+}

@@ -10,7 +10,7 @@
   :root {
     --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
     --surface: #fcfcfb; --hairline: rgba(11,11,11,0.10);
-    --hl: #2a78d6;
+    --hl: #2a78d6; --route: #6d28d9;
   }
   * { margin: 0; box-sizing: border-box; }
   html, body { height: 100%; }
@@ -23,44 +23,49 @@
   header h1 { font-size: 16px; font-weight: 650; }
   header .sub { font-size: 12.5px; color: var(--ink-2); }
   header .sub a { color: inherit; }
-  #main { flex: 1; display: flex; min-height: 0; }
-  #side {
-    width: 230px; flex: none; background: var(--surface);
-    border-right: 1px solid var(--hairline); display: flex; flex-direction: column;
-  }
-  #side .t { font-size: 12px; font-weight: 650; padding: 10px 12px 6px; }
-  #side input {
-    margin: 0 12px 8px; padding: 5px 8px; font: 12.5px system-ui, sans-serif;
-    border: 1px solid var(--hairline); border-radius: 6px; background: transparent; color: var(--ink);
-  }
-  #trail-list { overflow-y: auto; flex: 1; padding-bottom: 8px; }
-  .trow {
-    padding: 4px 12px; font-size: 12.5px; cursor: pointer; display: flex;
-    justify-content: space-between; gap: 8px; align-items: baseline;
-  }
-  .trow:hover { background: rgba(11,11,11,0.05); }
-  .trow.sel { background: var(--hl); color: #fff; }
-  .trow .mi { color: var(--muted); font-size: 11px; flex: none; }
-  .trow.sel .mi { color: rgba(255,255,255,0.8); }
   #map { flex: 1; }
-  .legend {
+
+  .panel {
     background: var(--surface); border: 1px solid var(--hairline); border-radius: 8px;
-    padding: 10px 12px; font: 12px/1.5 system-ui, sans-serif; color: var(--ink-2);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.12); max-width: 200px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12); font: 12.5px/1.5 system-ui, sans-serif;
   }
+  /* search (top-left, under zoom) */
+  #search { position: relative; width: 210px; }
+  #search input {
+    width: 100%; padding: 6px 9px; font: 12.5px system-ui, sans-serif;
+    border: 1px solid var(--hairline); border-radius: 8px; background: var(--surface);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12); color: var(--ink); outline: none;
+  }
+  #search-results { position: absolute; top: 32px; left: 0; right: 0; max-height: 260px;
+    overflow-y: auto; display: none; z-index: 1000; }
+  .sres { padding: 5px 10px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+  .sres:hover { background: rgba(11,11,11,0.06); }
+  .sres .mi { color: var(--muted); font-size: 11px; }
+
+  /* route panel (right) */
+  #route-panel { width: 235px; max-height: 60vh; overflow-y: auto; padding: 10px 12px; }
+  #route-panel .t { font-weight: 650; display: flex; justify-content: space-between; align-items: baseline; }
+  #route-panel .t button {
+    border: none; background: none; color: var(--muted); cursor: pointer; font-size: 12px; padding: 0;
+  }
+  #route-panel .t button:hover { color: var(--ink); }
+  #route-stats { margin: 4px 0 6px; color: var(--ink-2); }
+  #route-stats b { color: var(--ink); font-weight: 650; }
+  .rseg { padding: 3px 0; border-top: 1px solid var(--hairline); }
+  .rseg .nm { display: flex; justify-content: space-between; gap: 8px; }
+  .rseg .mi { color: var(--muted); font-size: 11px; flex: none; }
+  .rseg .gap, .rseg .warn { color: var(--muted); font-size: 11px; }
+  .rseg .warn { color: #9c3810; }
+  #route-hint { color: var(--muted); }
+
+  .legend { padding: 10px 12px; font-size: 12px; color: var(--ink-2); max-width: 200px; }
   .legend .t { font-weight: 650; color: var(--ink); margin-bottom: 4px; }
   .legend .row { display: flex; align-items: center; gap: 7px; }
   .legend .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; opacity: 0.75; }
   .legend .ln { width: 14px; height: 0; border-top: 2.5px solid #1a1a1a; flex: none; }
   .legend .wl { width: 14px; height: 0; border-top: 2px dashed #1d5c33; flex: none; }
-  .leaflet-popup-content { font: 13px/1.45 system-ui, sans-serif; }
-  .leaflet-popup-content b { font-weight: 650; }
-  .pop-meta { color: var(--ink-2); }
+  .leaflet-tooltip { font: 12px system-ui, sans-serif; }
   .th-icon, .cabin-icon { background: none; border: none; }
-  @media (max-width: 700px) {
-    #main { flex-direction: column; }
-    #side { width: 100%; height: 150px; border-right: none; border-bottom: 1px solid var(--hairline); }
-  }
 </style>
 </head>
 <body>
@@ -70,14 +75,7 @@
     <span class="sub" id="updated">Loading…</span>
     <span class="sub">Fires: NIFC/WFIGS/MTBS · Trails: USFS · <a href="https://www.fs.usda.gov/r03/santafe/alerts" target="_blank" rel="noopener">Current SFNF alerts &amp; closures ↗</a></span>
   </header>
-  <div id="main">
-    <aside id="side">
-      <div class="t">Trails — click to highlight</div>
-      <input id="filter" type="search" placeholder="Filter by name…">
-      <div id="trail-list"></div>
-    </aside>
-    <div id="map"></div>
-  </div>
+  <div id="map"></div>
 </div>
 <script>
 const BINS = [
@@ -98,14 +96,22 @@ const TH_NOTES = {
   "Jacks Creek Trailhead": "⚠ campground + FR 555 closed for construction thru 9/30/2026",
 };
 
+const CONNECT_M = 150;   // ≤ this: segments count as touching
+const GAP_M = 1000;      // ≤ this: extend the route across a (shown) data gap
+
 const map = L.map("map", { zoomSnap: 0.5 }).setView([35.87, -105.65], 11);
 L.tileLayer("https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}", {
   maxZoom: 16,
-  attribution: "USGS The National Map · Fires: NIFC, MTBS · Trails: USFS EDW",
+  attribution: "USGS The National Map · Fires: NIFC, MTBS · Trails: USFS EDW · Elevation: AWS Terrain",
 }).addTo(map);
 
 const fmt = n => n == null ? "—" : n.toLocaleString();
 const titleCase = s => (s || "").replace(/\w\S*/g, t => t[0] + t.slice(1).toLowerCase());
+const distM = (a, b) => {   // [lng,lat] equirectangular meters
+  const dx = (a[0] - b[0]) * 111320 * Math.cos((a[1] + b[1]) / 2 * Math.PI / 180);
+  const dy = (a[1] - b[1]) * 110540;
+  return Math.hypot(dx, dy);
+};
 
 const flagIcon = L.divIcon({
   className: "th-icon", iconSize: [20, 22], iconAnchor: [3, 21],
@@ -121,9 +127,18 @@ const cabinIcon = L.divIcon({
     <rect x="11" y="14" width="4" height="7" fill="#7a5c00"/></svg>`,
 });
 
-Promise.all(["fires", "trails", "wilderness", "trailheads", "meta"].map(n =>
-  fetch("data/" + n + (n === "meta" ? ".json" : ".geojson")).then(r => r.json())
-)).then(([fires, trails, wilderness, trailheads, meta]) => {
+Promise.all([
+  ...["fires", "trails", "wilderness", "trailheads", "meta"].map(n =>
+    fetch("data/" + n + (n === "meta" ? ".json" : ".geojson")).then(r => r.json())),
+  fetch("data/conditions.json").then(r => r.ok ? r.json() : null).catch(() => null),
+]).then(([fires, trails, wilderness, trailheads, meta, conditions]) => {
+  const cond = (conditions && conditions.usfs) || {};
+  const FLAG_LABELS = {
+    deadfall: "deadfall/blowdown", washout: "washouts", overgrown: "overgrown",
+    hard_to_follow: "hard to follow", snow_ice: "snow/ice", mud: "mud",
+    bugs: "bugs", burn: "burn-area mentions", rating_drop: "rating declining",
+  };
+  const flagsOf = no => ((cond[no] || {}).flags || []).map(f => FLAG_LABELS[f] || f);
 
   const fireLayer = L.geoJSON(fires, {
     style: f => ({
@@ -133,7 +148,7 @@ Promise.all(["fires", "trails", "wilderness", "trailheads", "meta"].map(n =>
     onEachFeature: (f, l) => {
       const p = f.properties;
       l.bindPopup(`<b>${p.name} Fire</b><br>
-        <span class="pop-meta">${p.year ?? "Year unknown"} · ${fmt(p.acres)} acres</span>`);
+        <span style="color:var(--ink-2)">${p.year ?? "Year unknown"} · ${fmt(p.acres)} acres</span>`);
     },
   }).addTo(map);
 
@@ -142,24 +157,210 @@ Promise.all(["fires", "trails", "wilderness", "trailheads", "meta"].map(n =>
     interactive: false,
   }).addTo(map);
 
+  // ---------- trails: hover tooltip, click = route builder ----------
   const baseStyle = { color: "#1a1a1a", weight: 1.75, opacity: 0.9 };
-  const hlStyle = { color: "#2a78d6", weight: 4.5, opacity: 1 };
-  const byTrail = {};   // "NAME|NO" -> [layers]
-  let selected = null;
+  const searchStyle = { color: "#2a78d6", weight: 4.5, opacity: 1 };
+  const routeStyle = { color: "#6d28d9", weight: 5, opacity: 1 };
 
+  const segs = [];           // per feature: {layer, props, parts, ends, miles}
+  const byTrail = {};        // normalized name|no -> seg indexes
+  let searchSel = null;      // key highlighted via search
+  let chain = [];            // route: [{i, rev, gapM}]
+
+  const flat = g => g.type === "LineString" ? [g.coordinates] : g.coordinates;
+
+  const trailRenderer = L.canvas({ tolerance: 8 });   // fat click target for thin lines
   const trailLayer = L.geoJSON(trails, {
+    renderer: trailRenderer,
     style: baseStyle,
     onEachFeature: (f, l) => {
       const p = f.properties;
+      const parts = flat(f.geometry);
+      const i = segs.length;
+      const fl = flagsOf(p.trail_no);
+      segs.push({
+        layer: l, props: p, parts,
+        ends: [parts[0][0], parts[parts.length - 1][parts[parts.length - 1].length - 1]],
+        miles: p.gis_miles || 0, i,
+      });
       const key = (p.trail_name || "Unnamed").replace(/\s+/g, "") + "|" + (p.trail_no || "");
-      (byTrail[key] = byTrail[key] || []).push(l);
-      l.bindPopup(`<b>${titleCase(p.trail_name) || "Unnamed trail"}</b><br>
-        <span class="pop-meta">Trail ${p.trail_no ?? "—"}</span>`);
-      l.on("mouseover", () => { if (selected !== key) l.setStyle({ weight: 4 }); });
-      l.on("mouseout", () => { if (selected !== key) l.setStyle(baseStyle); });
+      (byTrail[key] = byTrail[key] || []).push(i);
+      l.bindTooltip(`<b>${titleCase(p.trail_name) || "Unnamed"}</b> ${p.trail_no ?? ""}` +
+        ` · ${(p.gis_miles || 0).toFixed(1)} mi` +
+        (fl.length ? `<br>⚠ ${fl.join(", ")}` : ""), { sticky: true });
+      l.on("mouseover", () => { if (!inChain(i) && key !== searchSel) l.setStyle({ weight: 4 }); });
+      l.on("mouseout", () => restyle(i));
+      l.on("click", () => clickSeg(i));
     },
   }).addTo(map);
 
+  const inChain = i => chain.some(c => c.i === i);
+  function restyle(i) {
+    const s = segs[i];
+    const key = (s.props.trail_name || "Unnamed").replace(/\s+/g, "") + "|" + (s.props.trail_no || "");
+    if (inChain(i)) s.layer.setStyle(routeStyle);
+    else if (key === searchSel) s.layer.setStyle(searchStyle);
+    else s.layer.setStyle(baseStyle);
+  }
+  const restyleAll = () => segs.forEach(s => restyle(s.i));
+
+  // ---------- route builder ----------
+  function chainEnds() {
+    if (!chain.length) return null;
+    const first = chain[0], last = chain[chain.length - 1];
+    const head = first.rev ? segs[first.i].ends[1] : segs[first.i].ends[0];
+    const tail = last.rev ? segs[last.i].ends[0] : segs[last.i].ends[1];
+    return { head, tail };
+  }
+
+  function clickSeg(i) {
+    const pos = chain.findIndex(c => c.i === i);
+    if (pos >= 0) {
+      chain = pos === 0 && chain.length > 1 ? chain.slice(1) : chain.slice(0, pos);
+    } else if (!chain.length) {
+      chain = [{ i, rev: false, gapM: 0 }];
+    } else {
+      const { head, tail } = chainEnds();
+      const s = segs[i];
+      const cands = [   // [dist, attach-at-tail?, reversed?]
+        [distM(s.ends[0], tail), true, false],
+        [distM(s.ends[1], tail), true, true],
+        [distM(s.ends[0], head), false, true],
+        [distM(s.ends[1], head), false, false],
+      ].sort((a, b) => a[0] - b[0]);
+      const [d, atTail, rev] = cands[0];
+      if (d <= GAP_M) {
+        const gap = d > CONNECT_M ? d : 0;
+        if (atTail) chain.push({ i, rev, gapM: gap });
+        else {
+          // gapM marks the gap BEFORE a row; on head-attach it belongs to the old head
+          chain[0].gapM = gap;
+          chain.unshift({ i, rev, gapM: 0 });
+        }
+      } else {
+        chain = [{ i, rev: false, gapM: 0 }];
+      }
+    }
+    restyleAll();
+    renderRoute();
+  }
+
+  function segGainLoss(s, rev) {
+    let g = 0, l = 0;
+    for (const part of s.parts) {
+      const els = part.map(c => c[2] ?? 0);
+      const sm = els.map((e, j) =>
+        j > 0 && j < els.length - 1 ? (els[j - 1] + els[j] + els[j + 1]) / 3 : e);
+      for (let j = 1; j < sm.length; j++) {
+        const d = sm[j] - sm[j - 1];
+        if (d > 0) g += d; else l -= d;
+      }
+    }
+    return rev ? [l, g] : [g, l];
+  }
+
+  function renderRoute() {
+    const list = document.getElementById("route-segs");
+    const stats = document.getElementById("route-stats");
+    const hint = document.getElementById("route-hint");
+    list.innerHTML = "";
+    if (!chain.length) {
+      stats.textContent = "";
+      hint.style.display = "";
+      return;
+    }
+    hint.style.display = "none";
+    let miles = 0, gain = 0, loss = 0;
+    chain.forEach(c => {
+      const s = segs[c.i];
+      miles += s.miles + c.gapM / 1609.34;
+      const [g, l] = segGainLoss(s, c.rev);
+      gain += g; loss += l;
+      const fl = flagsOf(s.props.trail_no);
+      const d = document.createElement("div");
+      d.className = "rseg";
+      d.innerHTML =
+        (c.gapM ? `<div class="gap">· · · ${(c.gapM / 1609.34).toFixed(1)} mi gap in trail data · · ·</div>` : "") +
+        `<div class="nm"><span>${titleCase(s.props.trail_name) || "Unnamed"} <span style="color:var(--muted)">${s.props.trail_no ?? ""}</span></span>
+         <span class="mi">${s.miles.toFixed(1)} mi</span></div>` +
+        (fl.length ? `<div class="warn">⚠ ${fl.join(", ")}</div>` : "");
+      list.appendChild(d);
+    });
+    stats.innerHTML = `<b>${miles.toFixed(1)} mi</b> one way · ` +
+      `<b>+${Math.round(gain * 3.28084).toLocaleString()} ft</b> / −${Math.round(loss * 3.28084).toLocaleString()} ft`;
+  }
+
+  const routeCtl = L.control({ position: "topright" });
+  routeCtl.onAdd = () => {
+    const d = L.DomUtil.create("div", "panel");
+    d.id = "route-panel";
+    d.innerHTML = `<div class="t">Route <button id="route-clear" title="Clear route">clear ×</button></div>
+      <div id="route-stats"></div>
+      <div id="route-hint">Click a trail segment to start a route; click connecting segments to extend it. Click a selected segment to trim back.</div>
+      <div id="route-segs"></div>`;
+    L.DomEvent.disableClickPropagation(d);
+    d.querySelector("#route-clear").onclick = () => { chain = []; restyleAll(); renderRoute(); };
+    return d;
+  };
+  routeCtl.addTo(map);
+
+  // ---------- search ----------
+  const info = {};
+  segs.forEach(s => {
+    const p = s.props;
+    const key = (p.trail_name || "Unnamed").replace(/\s+/g, "") + "|" + (p.trail_no || "");
+    info[key] = info[key] || { name: titleCase(p.trail_name) || "Unnamed", no: p.trail_no, miles: 0 };
+    const nm = titleCase(p.trail_name) || "Unnamed";
+    if (nm.length < info[key].name.length) info[key].name = nm;
+    info[key].miles += p.gis_miles || 0;
+  });
+
+  const searchCtl = L.control({ position: "topleft" });
+  searchCtl.onAdd = () => {
+    const d = L.DomUtil.create("div");
+    d.id = "search";
+    d.innerHTML = `<input id="search-input" type="search" placeholder="Find a trail…" autocomplete="off">
+      <div id="search-results" class="panel"></div>`;
+    L.DomEvent.disableClickPropagation(d);
+    return d;
+  };
+  searchCtl.addTo(map);
+
+  function selectTrail(key) {
+    searchSel = key === searchSel ? null : key;
+    restyleAll();
+    if (searchSel) {
+      const layers = byTrail[key].map(i => segs[i].layer);
+      let b = layers[0].getBounds();
+      layers.forEach(l => b = b.extend(l.getBounds()));
+      map.fitBounds(b.pad(0.15));
+    }
+  }
+  setTimeout(() => {
+    const inp = document.getElementById("search-input");
+    const res = document.getElementById("search-results");
+    inp.addEventListener("input", () => {
+      const q = inp.value.trim().toLowerCase();
+      res.innerHTML = "";
+      if (!q) { res.style.display = "none"; searchSel = null; restyleAll(); return; }
+      const hits = Object.keys(info)
+        .filter(k => info[k].name.toLowerCase().includes(q) || String(info[k].no) === q)
+        .sort((a, b) => info[b].miles - info[a].miles).slice(0, 9);
+      hits.forEach(k => {
+        const fl = flagsOf(info[k].no);
+        const d = document.createElement("div");
+        d.className = "sres";
+        d.innerHTML = `<span>${info[k].name}${fl.length ? " ⚠" : ""} <span style="color:var(--muted)">${info[k].no ?? ""}</span></span>
+          <span class="mi">${info[k].miles.toFixed(1)} mi</span>`;
+        d.title = fl.join(", ");
+        d.onclick = () => { selectTrail(k); res.style.display = "none"; };
+        res.appendChild(d);
+      });
+      res.style.display = hits.length ? "block" : "none";
+    });
+  }, 0);
+
+  // ---------- markers, legend, chrome ----------
   const thLayer = L.layerGroup(trailheads.features.map(f => {
     const [lng, lat] = f.geometry.coordinates;
     const name = f.properties.name;
@@ -172,61 +373,14 @@ Promise.all(["fires", "trails", "wilderness", "trailheads", "meta"].map(n =>
     .bindTooltip("<b>The cabin</b><br>6 Mudge Rd", { direction: "top", offset: [0, -22] })
     .addTo(map);
 
-  // ---- sidebar trail index ----
-  const info = {};  // key -> {name, no, miles}
-  trails.features.forEach(f => {
-    const p = f.properties;
-    const key = (p.trail_name || "Unnamed").replace(/\s+/g, "") + "|" + (p.trail_no || "");
-    info[key] = info[key] || { name: titleCase(p.trail_name) || "Unnamed", no: p.trail_no, miles: 0 };
-    // name variants ("Sky Line"/"Skyline") merge on key; keep the tighter spelling
-    const nm = titleCase(p.trail_name) || "Unnamed";
-    if (nm.length < info[key].name.length) info[key].name = nm;
-    info[key].miles += p.gis_miles || 0;
-  });
-  const keys = Object.keys(info).sort((a, b) => info[a].name.localeCompare(info[b].name));
-  const listEl = document.getElementById("trail-list");
-  const rows = {};
-
-  function select(key) {
-    if (selected && byTrail[selected]) {
-      byTrail[selected].forEach(l => l.setStyle(baseStyle));
-      rows[selected].classList.remove("sel");
-    }
-    if (key === selected) { selected = null; return; }
-    selected = key;
-    const layers = byTrail[key] || [];
-    layers.forEach(l => { l.setStyle(hlStyle); l.bringToFront(); });
-    rows[key].classList.add("sel");
-    if (layers.length) {
-      let b = layers[0].getBounds();
-      layers.forEach(l => b = b.extend(l.getBounds()));
-      map.fitBounds(b.pad(0.15));
-    }
-  }
-
-  keys.forEach(key => {
-    const d = document.createElement("div");
-    d.className = "trow";
-    d.innerHTML = `<span>${info[key].name} <span style="color:var(--muted)">${info[key].no ?? ""}</span></span>
-      <span class="mi">${info[key].miles.toFixed(1)} mi</span>`;
-    d.onclick = () => select(key);
-    rows[key] = d;
-    listEl.appendChild(d);
-  });
-
-  document.getElementById("filter").addEventListener("input", e => {
-    const q = e.target.value.toLowerCase();
-    keys.forEach(k => rows[k].style.display = info[k].name.toLowerCase().includes(q) ? "" : "none");
-  });
-
   L.control.layers(null, {
     "Burn areas": fireLayer, "Trails": trailLayer,
     "Trailheads": thLayer, "Wilderness boundary": wildLayer,
-  }, { collapsed: true }).addTo(map);
+  }, { collapsed: true, position: "bottomleft" }).addTo(map);
 
   const legend = L.control({ position: "bottomright" });
   legend.onAdd = () => {
-    const d = L.DomUtil.create("div", "legend");
+    const d = L.DomUtil.create("div", "legend panel");
     d.innerHTML = `<div class="t">Burned area, by decade</div>` +
       BINS.map(b => `<div class="row"><span class="sw" style="background:${b.color}"></span>${b.label}</div>`).join("") +
       `<div class="row" style="margin-top:6px"><span class="ln"></span>USFS trail</div>
