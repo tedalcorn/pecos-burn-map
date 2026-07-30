@@ -145,9 +145,11 @@ def main():
     n_matched = sum(1 for v in matches.values() if v)
     print(f"matched {n_matched}/{len(matches)} AllTrails routes to USFS trails")
 
-    # per-USFS monthly aggregates
+    # per-USFS monthly + annual aggregates
     monthly = defaultdict(lambda: {"n": 0, "rating_sum": 0, "rated_n": 0,
                                    "tags": defaultdict(int)})
+    annual = defaultdict(lambda: {"n": 0, "rating_sum": 0, "rated_n": 0})
+    all_ratings = [0, 0]
     for tid, date, rating, comment, obstacles in con.execute(
             "SELECT trail_id, date, rating, comment, obstacles FROM reviews WHERE date IS NOT NULL"):
         nos = matches.get(tid) or {}
@@ -155,6 +157,9 @@ def main():
             continue
         ym = date[:7]
         tags = tag_review(comment, obstacles)
+        if rating:
+            all_ratings[0] += rating
+            all_ratings[1] += 1
         for no in nos:
             b = monthly[(no, ym)]
             b["n"] += 1
@@ -163,6 +168,11 @@ def main():
                 b["rated_n"] += 1
             for t in tags:
                 b["tags"][t] += 1
+            a = annual[(no, ym[:4])]
+            a["n"] += 1
+            if rating:
+                a["rating_sum"] += rating
+                a["rated_n"] += 1
 
     now = datetime.now(timezone.utc)
     cur_ym = now.strftime("%Y-%m")
@@ -199,13 +209,34 @@ def main():
         if (r_n >= MIN_REVIEWS_FOR_RATING and p_n >= MIN_REVIEWS_FOR_RATING
                 and p_rating - r_rating >= RATING_DROP_FLAG):
             flags.append("rating_drop")
+        # annual series (2010+; earlier is trace volume) for the info card
+        years = {}
+        for (n2, yr), a in annual.items():
+            if n2 == no and yr >= "2010":
+                years[yr] = [a["n"], round(a["rating_sum"] / a["rated_n"], 2) if a["rated_n"] else None]
+        # last-6-months theme summary
+        yms6 = recent_yms[-6:]
+        r6 = [b for ym, b in rows.items() if ym in yms6]
+        tags6 = defaultdict(int)
+        for b in r6:
+            for t, c in b["tags"].items():
+                tags6[t] += c
+        n6 = sum(b["n"] for b in r6)
+        rated6 = sum(b["rated_n"] for b in r6)
         out["usfs"][no] = {
             "name": usfs[no]["name"].title(),
             "reviews_recent": r_n, "reviews_total": r_n + p_n,
             "rating_recent": round(r_rating, 2) if r_n else None,
             "rating_prior": round(p_rating, 2) if p_n else None,
             "tags": tag_stats, "flags": flags,
+            "annual": years,
+            "recent6": {"n": n6,
+                        "rating": round(sum(b["rating_sum"] for b in r6) / rated6, 2) if rated6 else None,
+                        "tags": {t: c for t, c in sorted(tags6.items(), key=lambda x: -x[1]) if c > 0}},
+            "n_routes": sum(1 for v in matches.values() if no in v),
         }
+
+    out["wilderness_avg_rating"] = round(all_ratings[0] / all_ratings[1], 2) if all_ratings[1] else None
 
     # route-level matching table (for debugging / the README)
     for tid, name in con.execute("SELECT id, name FROM trails"):

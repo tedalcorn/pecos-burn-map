@@ -58,6 +58,18 @@
   .rseg .warn { color: #9c3810; }
   #route-hint { color: var(--muted); }
 
+  /* trail info card (left, under search) */
+  #info-card {
+    position: absolute; left: 10px; top: 148px; z-index: 1001; width: 262px;
+    padding: 10px 12px; display: none; max-height: calc(100% - 170px); overflow-y: auto;
+  }
+  #info-card .t { font-weight: 650; display: flex; justify-content: space-between; align-items: baseline; }
+  #info-card .t button { border: none; background: none; color: var(--muted); cursor: pointer; padding: 0; font-size: 13px; }
+  #info-card .sub2 { color: var(--ink-2); margin: 2px 0 6px; }
+  #info-card .ct { font-size: 11px; color: var(--muted); margin: 8px 0 2px; }
+  #info-card .theme { color: var(--ink-2); }
+  #info-card .warn { color: #9c3810; }
+
   .legend { padding: 10px 12px; font-size: 12px; color: var(--ink-2); max-width: 200px; }
   .legend .t { font-weight: 650; color: var(--ink); margin-bottom: 4px; }
   .legend .row { display: flex; align-items: center; gap: 7px; }
@@ -161,11 +173,13 @@ Promise.all([
   const baseStyle = { color: "#1a1a1a", weight: 1.75, opacity: 0.9 };
   const searchStyle = { color: "#2a78d6", weight: 4.5, opacity: 1 };
   const routeStyle = { color: "#6d28d9", weight: 5, opacity: 1 };
+  const candStyle = { color: "#6d28d9", weight: 3.5, opacity: 0.35 };  // attachable next segments
 
   const segs = [];           // per feature: {layer, props, parts, ends, miles}
   const byTrail = {};        // normalized name|no -> seg indexes
   let searchSel = null;      // key highlighted via search
   let chain = [];            // route: [{i, rev, gapM}]
+  const candidates = new Set();
 
   const flat = g => g.type === "LineString" ? [g.coordinates] : g.coordinates;
 
@@ -191,6 +205,10 @@ Promise.all([
       l.on("mouseover", () => { if (!inChain(i) && key !== searchSel) l.setStyle({ weight: 4 }); });
       l.on("mouseout", () => restyle(i));
       l.on("click", () => clickSeg(i));
+      l.on("contextmenu", e => {
+        e.originalEvent.preventDefault();
+        showInfo(p.trail_no);
+      });
     },
   }).addTo(map);
 
@@ -199,10 +217,22 @@ Promise.all([
     const s = segs[i];
     const key = (s.props.trail_name || "Unnamed").replace(/\s+/g, "") + "|" + (s.props.trail_no || "");
     if (inChain(i)) s.layer.setStyle(routeStyle);
+    else if (candidates.has(i)) s.layer.setStyle(candStyle);
     else if (key === searchSel) s.layer.setStyle(searchStyle);
     else s.layer.setStyle(baseStyle);
   }
-  const restyleAll = () => segs.forEach(s => restyle(s.i));
+  function computeCandidates() {
+    candidates.clear();
+    if (!chain.length) return;
+    const { head, tail } = chainEnds();
+    segs.forEach(s => {
+      if (inChain(s.i)) return;
+      const d = Math.min(distM(s.ends[0], head), distM(s.ends[1], head),
+                         distM(s.ends[0], tail), distM(s.ends[1], tail));
+      if (d <= GAP_M) candidates.add(s.i);
+    });
+  }
+  const restyleAll = () => { computeCandidates(); segs.forEach(s => restyle(s.i)); };
 
   // ---------- route builder ----------
   function chainEnds() {
@@ -279,11 +309,14 @@ Promise.all([
       const fl = flagsOf(s.props.trail_no);
       const d = document.createElement("div");
       d.className = "rseg";
+      d.style.cursor = "pointer";
+      d.title = "AllTrails review history";
       d.innerHTML =
         (c.gapM ? `<div class="gap">· · · ${(c.gapM / 1609.34).toFixed(1)} mi gap in trail data · · ·</div>` : "") +
         `<div class="nm"><span>${titleCase(s.props.trail_name) || "Unnamed"} <span style="color:var(--muted)">${s.props.trail_no ?? ""}</span></span>
          <span class="mi">${s.miles.toFixed(1)} mi</span></div>` +
         (fl.length ? `<div class="warn">⚠ ${fl.join(", ")}</div>` : "");
+      d.onclick = () => showInfo(s.props.trail_no);
       list.appendChild(d);
     });
     stats.innerHTML = `<b>${miles.toFixed(1)} mi</b> one way · ` +
@@ -296,13 +329,90 @@ Promise.all([
     d.id = "route-panel";
     d.innerHTML = `<div class="t">Route <button id="route-clear" title="Clear route">clear ×</button></div>
       <div id="route-stats"></div>
-      <div id="route-hint">Click a trail segment to start a route; click connecting segments to extend it. Click a selected segment to trim back.</div>
+      <div id="route-hint">Click a trail segment to start a route; connectable segments glow faint purple — click to extend. Click a selected segment to trim back. Right-click any trail for its AllTrails review history.</div>
       <div id="route-segs"></div>`;
     L.DomEvent.disableClickPropagation(d);
     d.querySelector("#route-clear").onclick = () => { chain = []; restyleAll(); renderRoute(); };
     return d;
   };
   routeCtl.addTo(map);
+
+  // ---------- trail info card (AllTrails signals) ----------
+  const card = document.createElement("div");
+  card.id = "info-card";
+  card.className = "panel";
+  map.getContainer().appendChild(card);
+  L.DomEvent.disableClickPropagation(card);
+  L.DomEvent.disableScrollPropagation(card);
+
+  const TAG_LABELS = {
+    deadfall: "deadfall", washout: "washouts", overgrown: "overgrown",
+    hard_to_follow: "hard to follow", snow_ice: "snow/ice", mud: "mud",
+    bugs: "bugs", burn: "burn area", maintained: "✓ maintenance",
+  };
+  const wildAvg = conditions && conditions.wilderness_avg_rating;
+
+  function barChart(annual) {
+    const years = [];
+    for (let y = 2010; y <= new Date().getFullYear(); y++) years.push(String(y));
+    const max = Math.max(1, ...years.map(y => (annual[y] || [0])[0]));
+    const W = 238, H = 46, bw = W / years.length;
+    const bars = years.map((y, i) => {
+      const n = (annual[y] || [0])[0];
+      const h = n / max * (H - 12);
+      return `<rect x="${(i * bw + 1).toFixed(1)}" y="${(H - h).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" fill="#2a78d6"/>`;
+    }).join("");
+    return `<svg width="${W}" height="${H + 12}" role="img">${bars}
+      <text x="0" y="${H + 10}" font-size="9" fill="#898781">2010</text>
+      <text x="${W}" y="${H + 10}" font-size="9" fill="#898781" text-anchor="end">${years[years.length - 1]}</text>
+      <text x="${W}" y="8" font-size="9" fill="#898781" text-anchor="end">max ${max}/yr</text></svg>`;
+  }
+
+  function ratingChart(annual) {
+    const years = [];
+    for (let y = 2010; y <= new Date().getFullYear(); y++) years.push(String(y));
+    const W = 238, H = 44, bw = W / years.length;
+    const yOf = r => 4 + (5 - r) / 2 * (H - 8);   // 5★ top, 3★ bottom
+    let marks = "";
+    years.forEach((y, i) => {
+      const [n, r] = annual[y] || [0, null];
+      if (r == null || r < 3) return;
+      const solid = n >= 10;   // hollow = too few reviews to trust
+      marks += `<circle cx="${(i * bw + bw / 2).toFixed(1)}" cy="${yOf(r).toFixed(1)}" r="2.6"
+        fill="${solid ? "#2a78d6" : "none"}" stroke="#2a78d6" stroke-width="1.3"/>`;
+    });
+    const avgLine = wildAvg ? `<line x1="0" x2="${W}" y1="${yOf(wildAvg).toFixed(1)}" y2="${yOf(wildAvg).toFixed(1)}"
+      stroke="#c3c2b7" stroke-dasharray="3 3"/>` : "";
+    return `<svg width="${W}" height="${H}" role="img">${avgLine}${marks}
+      <text x="0" y="9" font-size="9" fill="#898781">5★</text>
+      <text x="0" y="${H - 2}" font-size="9" fill="#898781">3★</text></svg>`;
+  }
+
+  function showInfo(no) {
+    const c = cond[no];
+    const meta = Object.values(info).find(v => v.no === no);
+    const nm = meta ? meta.name : (c ? c.name : "Trail " + no);
+    let body;
+    if (!c || !c.reviews_total) {
+      body = `<div class="sub2">No AllTrails coverage for this trail.</div>`;
+    } else {
+      const flags = (c.flags || []).map(f => FLAG_LABELS[f] || f).join(", ");
+      const r6 = c.recent6 || {};
+      const themes = Object.entries(r6.tags || {}).slice(0, 5)
+        .map(([t, n]) => `${TAG_LABELS[t] || t} ${n}`).join(" · ");
+      body = `
+        <div class="sub2">${c.n_routes} AllTrails route${c.n_routes > 1 ? "s" : ""} · ${c.reviews_total.toLocaleString()} reviews</div>
+        ${flags ? `<div class="warn">⚠ ${flags}</div>` : ""}
+        <div class="ct">Reviews per year</div>${barChart(c.annual || {})}
+        <div class="ct">Avg rating by year (hollow = under 10 reviews; dashes = wilderness avg ${wildAvg}★)</div>${ratingChart(c.annual || {})}
+        <div class="ct">Last 6 months — ${r6.n || 0} reviews${r6.rating ? ` · ${r6.rating}★` : ""}</div>
+        <div class="theme">${themes || "no condition mentions"}</div>`;
+    }
+    card.innerHTML = `<div class="t"><span>${nm} <span style="color:var(--muted)">${no ?? ""}</span></span>
+      <button id="info-close">×</button></div>${body}`;
+    card.style.display = "block";
+    card.querySelector("#info-close").onclick = () => card.style.display = "none";
+  }
 
   // ---------- search ----------
   const info = {};
@@ -353,7 +463,7 @@ Promise.all([
         d.innerHTML = `<span>${info[k].name}${fl.length ? " ⚠" : ""} <span style="color:var(--muted)">${info[k].no ?? ""}</span></span>
           <span class="mi">${info[k].miles.toFixed(1)} mi</span>`;
         d.title = fl.join(", ");
-        d.onclick = () => { selectTrail(k); res.style.display = "none"; };
+        d.onclick = () => { selectTrail(k); showInfo(info[k].no); res.style.display = "none"; };
         res.appendChild(d);
       });
       res.style.display = hits.length ? "block" : "none";

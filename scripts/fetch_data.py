@@ -110,7 +110,6 @@ def node_trail_network(features):
     # line it meets (digitization offset), so the union would never split
     # there. Snap endpoints onto any other line within ~25 m first.
     SNAP = 0.00022
-    all_union = unary_union([ln for ln, _ in lines])
     snapped = []
     for ln, props in lines:
         coords = list(ln.coords)
@@ -126,6 +125,43 @@ def node_trail_network(features):
 
     noded = unary_union([ln for ln, _ in lines])
     pieces = list(getattr(noded, "geoms", [noded]))
+
+    # T-junction repair: some trails end 30–220 m short of the trail they
+    # meet (e.g. Jacks Creek's south end, 184 m from Beattys), so no node
+    # exists and the crossing piece stays unsplit. Split pieces where a
+    # dangling endpoint (degree-1 node) projects onto them within ~220 m.
+    # Geometry is NOT moved — the map's route builder bridges the small gap.
+    from shapely.ops import substring
+    T_TOL = 0.002
+    degree = {}
+    for p in pieces:
+        for c in (p.coords[0], p.coords[-1]):
+            k = (round(c[0], 6), round(c[1], 6))
+            degree[k] = degree.get(k, 0) + 1
+    dangling = [Point(k) for k, d in degree.items() if d == 1]
+    cuts = {}   # piece index -> [distances along]
+    for pt in dangling:
+        best_i, best_d = None, T_TOL
+        for i, p in enumerate(pieces):
+            d = p.distance(pt)
+            if 1e-9 < d < best_d:
+                best_i, best_d = i, d
+        if best_i is not None:
+            along = pieces[best_i].project(pt)
+            if 0.0003 < along < pieces[best_i].length - 0.0003:  # interior only
+                cuts.setdefault(best_i, []).append(along)
+    new_pieces = []
+    for i, p in enumerate(pieces):
+        if i not in cuts:
+            new_pieces.append(p)
+            continue
+        start = 0.0
+        for d in sorted(cuts[i]):
+            new_pieces.append(substring(p, start, d))
+            start = d
+        new_pieces.append(substring(p, start, p.length))
+    pieces = new_pieces
+    log(f"  T-junction repair: split {len(cuts)} pieces at dangling endpoints")
     out = []
     for piece in pieces:
         mid = piece.interpolate(0.5, normalized=True)
