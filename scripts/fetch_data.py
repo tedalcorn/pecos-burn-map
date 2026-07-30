@@ -216,6 +216,50 @@ class Elevation:
         log(f"  elevation: sampled via {len(self.tiles)} terrain tiles")
 
 
+def trail_burn_overlap(trails, fires):
+    """Per USFS trail: miles inside burn perimeters (union — overlapping fires
+    like Hermits Peak/Calf Canyon aren't double-counted) plus per-fire detail."""
+    from shapely.ops import unary_union
+    from shapely.prepared import prep
+    by_no = {}
+    for f in trails:
+        p = f["properties"]
+        no = p.get("trail_no")
+        if not no:
+            continue
+        b = by_no.setdefault(no, {"geoms": [], "miles": 0})
+        b["geoms"].append(shape(f["geometry"]))
+        b["miles"] += p.get("gis_miles") or 0
+    from shapely.validation import make_valid
+    fire_geoms = [(f["properties"], make_valid(shape(f["geometry"]))) for f in fires]
+    all_fires = unary_union([g for _, g in fire_geoms])
+    prepared = prep(all_fires)
+
+    def line_miles(g):
+        return sum(geo_miles(list(part.coords))
+                   for part in getattr(g, "geoms", [g]) if part.length)
+
+    out = {}
+    for no, b in by_no.items():
+        tg = unary_union(b["geoms"])
+        if not prepared.intersects(tg):
+            continue
+        total = line_miles(tg.intersection(all_fires))
+        if total < 0.05:
+            continue
+        per_fire = []
+        for p, fg in fire_geoms:
+            mi = line_miles(tg.intersection(fg))
+            if mi >= 0.05:
+                per_fire.append({"name": p["name"], "year": p["year"], "mi": round(mi, 1)})
+        per_fire.sort(key=lambda x: -x["mi"])
+        out[no] = {"burn_mi": round(total, 1),
+                   "pct": round(total / b["miles"], 3) if b["miles"] else None,
+                   "fires": per_fire}
+    (OUT / "trail_burns.json").write_text(json.dumps(out, separators=(",", ":")))
+    log(f"  wrote trail_burns.json: {len(out)} trails cross burns")
+
+
 def round_coords(obj, ndigits=5):
     if isinstance(obj, float):
         return round(obj, ndigits)
@@ -370,6 +414,7 @@ def main():
         seen_names[base] = n + 1
         p["name"] = base if n == 0 else f"Unnamed ({yy}, {octant} Pecos, {p.get('acres') or '?'} ac)"
     write_geojson("fires", fires)
+    trail_burn_overlap(trails, fires)
 
     meta = {
         "fetched_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pecos Wilderness — Burn Areas &amp; Trails</title>
+<title>Pecos Wilderness Trail Guide</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -87,11 +87,11 @@
 <body>
 <div id="app">
   <header>
-    <h1>Pecos Wilderness — Burn Areas &amp; Trails</h1>
+    <h1>Pecos Wilderness Trail Guide</h1>
     <nav class="tabs">
       <a class="tab on" href="index.html">Map</a>
-      <a class="tab" href="trails.html">Trail table</a>
-      <a class="tab" href="burns.html">Burn table</a>
+      <a class="tab" href="trails.html">Trails</a>
+      <a class="tab" href="burns.html">Burns</a>
     </nav>
     <span class="sub" id="updated">Loading…</span>
     <span class="sub">Fires: NIFC/WFIGS/MTBS · Trails: USFS · <a href="https://www.fs.usda.gov/r03/santafe/alerts" target="_blank" rel="noopener">Current SFNF alerts &amp; closures ↗</a></span>
@@ -175,7 +175,7 @@ Promise.all([
       const fkey = encodeURIComponent(`${p.name}|${p.year}`);
       l.bindPopup(`<b>${p.name} Fire</b><br>
         <span style="color:var(--ink-2)">${p.year ?? "Year unknown"} · ${fmt(p.acres)} acres</span><br>
-        <a href="burns.html?hl=${fkey}" style="color:var(--ink-2);font-size:11px">→ see in burn table</a>`);
+        <a href="burns.html?hl=${fkey}" style="color:var(--ink-2);font-size:11px">→ Burns table</a>`);
     },
   }).addTo(map);
 
@@ -464,7 +464,7 @@ Promise.all([
     }
     card.innerHTML = `<div class="t"><span>${nm} <span style="color:var(--muted)">${no ?? ""}</span></span>
       <button id="info-close">×</button></div>${body}
-      <div class="ct"><a href="trails.html?hl=${encodeURIComponent(no)}" style="color:var(--ink-2)">→ see in trail table</a></div>`;
+      <div class="ct"><a href="trails.html?hl=${encodeURIComponent(no)}" style="color:var(--ink-2)">→ Trails table</a></div>`;
     card.style.display = "block";
     card.querySelector("#info-close").onclick = () => card.style.display = "none";
   }

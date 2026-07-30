@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pecos Wilderness — Trail Table</title>
+<title>Pecos Wilderness Trail Guide · Trails</title>
 <style>
   :root {
     --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
@@ -51,19 +51,15 @@
 </head>
 <body>
 <header>
-  <h1>Pecos Wilderness — Trails</h1>
+  <h1>Pecos Wilderness Trail Guide</h1>
   <nav class="tabs">
     <a class="tab" href="index.html">Map</a>
-    <a class="tab on" href="trails.html">Trail table</a>
-    <a class="tab" href="burns.html">Burn table</a>
+    <a class="tab on" href="trails.html">Trails</a>
+    <a class="tab" href="burns.html">Burns</a>
   </nav>
   <span class="sub" id="updated"></span>
 </header>
 <main>
-  <p class="note">Click a column to sort · click a row to see the trail on the map ·
-    review data from AllTrails (matched routes); “—” = no AllTrails coverage.
-    Deadfall = share of reviews mentioning it. Arrows show the trend vs the prior 5 years
-    (steeper = bigger move; hover for the number). Climb = net low-to-high elevation difference.</p>
   <table id="tbl">
     <thead><tr id="hdr"></tr></thead>
     <tbody id="body"></tbody>
@@ -75,7 +71,8 @@ const fmtFt = m => Math.round(m * 3.28084).toLocaleString();
 Promise.all([
   fetch("data/trails.geojson").then(r => r.json()),
   fetch("data/conditions.json").then(r => r.ok ? r.json() : null).catch(() => null),
-]).then(([trails, conditions]) => {
+  fetch("data/trail_burns.json").then(r => r.ok ? r.json() : {}).catch(() => ({})),
+]).then(([trails, conditions, burns]) => {
   const cond = (conditions && conditions.usfs) || {};
   document.getElementById("updated").textContent =
     conditions ? "AllTrails data through " + conditions.updated.slice(0, 10) : "";
@@ -139,6 +136,7 @@ Promise.all([
     { k: "miles",  label: "Miles",            get: r => r.miles },
     { k: "gain",   label: "Climb (ft)",       get: r => r.zmax - r.zmin },
     { k: "grade",  label: "Grade",            get: r => (r.zmax - r.zmin) * 3.28084 / (r.miles * 5280) },
+    { k: "burn",   label: "In burns",         get: r => (burns[r.no] || {}).pct ?? -1 },
     { k: "vol",    label: "Reviews (12 mo)",  get: r => r.vol ?? -1 },
     { k: "rating", label: "Rating",           get: r => r.rating ?? -1 },
     { k: "df",     label: "Deadfall %",       get: r => r.df ?? -1 },
@@ -176,11 +174,17 @@ Promise.all([
       const df = r.df == null ? `<span class="dim">—</span>` : (r.df * 100).toFixed(1) + "%";
       const gainFt = Math.round((r.zmax - r.zmin) * 3.28084);
       const grade = gainFt / (r.miles * 5280);
+      const bu = burns[r.no];
+      const fireLbl = f => `${f.name} '${String(f.year).slice(2)}`;
+      const burnCell = !bu ? `<span class="dim">—</span>` :
+        `${(bu.pct * 100).toFixed(0)}% <span class="dim">· ${bu.burn_mi} mi · ${bu.fires.slice(0, 2).map(fireLbl).join(", ")}${bu.fires.length > 2 ? ` +${bu.fires.length - 2}` : ""}</span>`;
+      const burnTitle = bu ? ` title="${bu.fires.map(f => `${fireLbl(f)}: ${f.mi} mi`).join(" · ")}"` : "";
       return `<tr data-no="${r.no}" class="${r.no === hlNo ? "hl" : ""}">
         <td>${titleCase(r.name)} <span class="tno">${r.no}</span>${flags}</td>
         <td>${r.miles.toFixed(1)}</td>
         <td>+${gainFt.toLocaleString()} <span class="dim">(${fmtFt(r.zmin)}–${fmtFt(r.zmax)})</span></td>
         <td>${(grade * 100).toFixed(1)}%</td>
+        <td${burnTitle}>${burnCell}</td>
         <td>${vol}</td>
         <td${rtTitle}>${r.rating ?? '<span class="dim">—</span>'}${rArr}</td>
         <td${dfTitle}>${df}${dArr}</td>
