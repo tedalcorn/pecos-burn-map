@@ -74,7 +74,7 @@
   .legend .t { font-weight: 650; color: var(--ink); margin-bottom: 4px; }
   .legend .row { display: flex; align-items: center; gap: 7px; }
   .legend .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; opacity: 0.75; }
-  .legend .ln { width: 14px; height: 0; border-top: 2.5px dashed #f0b400; flex: none; }
+  .legend .ln { width: 14px; height: 0; border-top: 2.5px dashed #d02090; flex: none; }
   .legend .wl { width: 14px; height: 0; border-top: 2px dashed #1d5c33; flex: none; }
   .leaflet-tooltip { font: 12px system-ui, sans-serif; }
   .th-icon, .cabin-icon { background: none; border: none; }
@@ -174,7 +174,7 @@ Promise.all([
   });   // off by default — toggle in the layer control
 
   // ---------- trails: hover tooltip, click = route builder ----------
-  const baseStyle = { color: "#f0b400", weight: 2.25, opacity: 1, dashArray: "5 4" };
+  const baseStyle = { color: "#d02090", weight: 2.25, opacity: 1, dashArray: "5 4" };
   const searchStyle = { color: "#2a78d6", weight: 4.5, opacity: 1 };
   const routeStyle = { color: "#6d28d9", weight: 5, opacity: 1 };
   const candStyle = { color: "#6d28d9", weight: 3.5, opacity: 0.35 };  // attachable next segments
@@ -359,12 +359,19 @@ Promise.all([
   function barChart(annual) {
     const years = [];
     for (let y = 2010; y <= new Date().getFullYear(); y++) years.push(String(y));
-    const max = Math.max(1, ...years.map(y => (annual[y] || [0])[0]));
+    const max = Math.max(1, ...years.map(y => { const a = annual[y] || [0]; return a[2] || a[0]; }));
     const W = 238, H = 46, bw = W / years.length;
     const bars = years.map((y, i) => {
-      const n = (annual[y] || [0])[0];
+      const a = annual[y] || [0];
+      const n = a[0], est = a[2];
       const h = n / max * (H - 12);
-      return `<rect x="${(i * bw + 1).toFixed(1)}" y="${(H - h).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" fill="#2a78d6"/>`;
+      let r = "";
+      if (est && est > n) {   // current year: outline = estimated full-year total
+        const he = est / max * (H - 12);
+        r += `<rect x="${(i * bw + 1).toFixed(1)}" y="${(H - he).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${he.toFixed(1)}" rx="1.5" fill="none" stroke="#2a78d6" stroke-width="1" stroke-dasharray="2 2"/>`;
+      }
+      r += `<rect x="${(i * bw + 1).toFixed(1)}" y="${(H - h).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" fill="#2a78d6"/>`;
+      return r;
     }).join("");
     return `<svg width="${W}" height="${H + 12}" role="img">${bars}
       <text x="0" y="${H + 10}" font-size="9" fill="#898781">2010</text>
@@ -407,7 +414,7 @@ Promise.all([
       body = `
         <div class="sub2">${c.n_routes} AllTrails route${c.n_routes > 1 ? "s" : ""} · ${c.reviews_total.toLocaleString()} reviews</div>
         ${flags ? `<div class="warn">⚠ ${flags}</div>` : ""}
-        <div class="ct">Reviews per year</div>${barChart(c.annual || {})}
+        <div class="ct">Reviews per year (dotted = full-year estimate from YTD pace)</div>${barChart(c.annual || {})}
         <div class="ct">Avg rating by year (hollow = under 10 reviews; dashes = wilderness avg ${wildAvg}★)</div>${ratingChart(c.annual || {})}
         <div class="ct">Last 6 months — ${r6.n || 0} reviews${r6.rating ? ` · ${r6.rating}★` : ""}</div>
         <div class="theme">${themes || "no condition mentions"}</div>`;

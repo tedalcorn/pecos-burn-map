@@ -100,12 +100,14 @@ def match_routes(con, usfs):
         for m in re.findall(r"\((\d{1,3}[A-Z]?)\)", name or ""):
             if m in usfs:
                 got[m] = "number"
-        # 2. USFS trail names as words in the route name
+        # 2. USFS trail names as words in the route name ("SKY LINE" in USFS
+        #    data vs "Skyline" in route names — match space-stripped too)
         up = (name or "").upper()
         for no, tname in name_index.items():
             if no in got:
                 continue
-            if re.search(rf"\b{re.escape(tname)}\b", up):
+            variants = {tname, tname.replace(" ", "")}
+            if any(re.search(rf"\b{re.escape(v)}\b", up) for v in variants):
                 got[no] = "name"
         # 3. start point near a USFS trail
         pt = Point(lng, lat)
@@ -175,6 +177,22 @@ def main():
                 a["rated_n"] += 1
 
     now = datetime.now(timezone.utc)
+    # what fraction of a year's reviews arrive by today's date, wilderness-wide
+    # over the last 3 full years — used to project current-year totals
+    doy = now.strftime("%m-%d")
+    ytd_n = full_n = 0
+    prior_years = [str(now.year - k) for k in (1, 2, 3)]
+    for tid, date in con.execute("SELECT trail_id, date FROM reviews WHERE date IS NOT NULL"):
+        if not matches.get(tid):
+            continue
+        if date[:4] in prior_years:
+            full_n += 1
+            if date[5:10] <= doy:
+                ytd_n += 1
+    ytd_fraction = ytd_n / full_n if full_n >= 200 else None
+    print(f"YTD pace fraction (share of a year's reviews by {doy}): "
+          f"{ytd_fraction:.3f}" if ytd_fraction else "no pace estimate")
+
     cur_ym = now.strftime("%Y-%m")
     recent_yms = sorted({ym for (_, ym) in monthly if ym <= cur_ym})[-RECENT_MONTHS:]
 
@@ -209,11 +227,15 @@ def main():
         if (r_n >= MIN_REVIEWS_FOR_RATING and p_n >= MIN_REVIEWS_FOR_RATING
                 and p_rating - r_rating >= RATING_DROP_FLAG):
             flags.append("rating_drop")
-        # annual series (2010+; earlier is trace volume) for the info card
+        # annual series (2010+; earlier is trace volume) for the info card;
+        # current year gets [n_ytd, rating, estimated_total] from YTD pace
         years = {}
         for (n2, yr), a in annual.items():
             if n2 == no and yr >= "2010":
                 years[yr] = [a["n"], round(a["rating_sum"] / a["rated_n"], 2) if a["rated_n"] else None]
+        cy = str(now.year)
+        if cy in years and ytd_fraction:
+            years[cy] = years[cy][:2] + [round(years[cy][0] / ytd_fraction)]
         # last-6-months theme summary
         yms6 = recent_yms[-6:]
         r6 = [b for ym, b in rows.items() if ym in yms6]
