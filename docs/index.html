@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pecos Wilderness — Burn Areas &amp; Trails</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --surface: #fcfcfb; --hairline: rgba(11,11,11,0.10);
+  }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); }
+  #app { display: flex; flex-direction: column; height: 100%; }
+  header {
+    background: var(--surface); border-bottom: 1px solid var(--hairline);
+    padding: 10px 16px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  }
+  header h1 { font-size: 16px; font-weight: 650; }
+  header .sub { font-size: 12.5px; color: var(--ink-2); }
+  header .sub a { color: inherit; }
+  #map { flex: 1; }
+  .legend {
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: 8px;
+    padding: 10px 12px; font: 12px/1.5 system-ui, sans-serif; color: var(--ink-2);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12); max-width: 200px;
+  }
+  .legend .t { font-weight: 650; color: var(--ink); margin-bottom: 4px; }
+  .legend .row { display: flex; align-items: center; gap: 7px; }
+  .legend .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; opacity: 0.75; }
+  .legend .ln { width: 14px; height: 0; border-top: 2.5px solid #1a1a1a; flex: none; }
+  .legend .wl { width: 14px; height: 0; border-top: 2px dashed #1d5c33; flex: none; }
+  .leaflet-popup-content { font: 13px/1.45 system-ui, sans-serif; }
+  .leaflet-popup-content b { font-weight: 650; }
+  .pop-meta { color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Pecos Wilderness — Burn Areas &amp; Trails</h1>
+    <span class="sub" id="updated">Loading…</span>
+    <span class="sub">Fires: NIFC/WFIGS · Trails: USFS · <a href="https://www.fs.usda.gov/r03/santafe/alerts" target="_blank" rel="noopener">Current SFNF alerts &amp; closures ↗</a></span>
+  </header>
+  <div id="map"></div>
+</div>
+<script>
+const BINS = [
+  { max: 1989, label: "Before 1990", color: "#f29c6b" },
+  { max: 1999, label: "1990s",       color: "#ea7440" },
+  { max: 2009, label: "2000s",       color: "#d1511d" },
+  { max: 2019, label: "2010s",       color: "#9c3810" },
+  { max: 9999, label: "2020s",       color: "#66230a" },
+];
+const binOf = y => BINS.find(b => (y ?? 0) <= b.max);
+
+const map = L.map("map", { zoomSnap: 0.5 }).setView([35.87, -105.65], 11);
+L.tileLayer("https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}", {
+  maxZoom: 16,
+  attribution: "USGS The National Map · Fires: NIFC · Trails: USFS EDW",
+}).addTo(map);
+
+const fmt = n => n == null ? "—" : n.toLocaleString();
+
+Promise.all(["fires", "trails", "wilderness", "meta"].map(n =>
+  fetch("data/" + n + (n === "meta" ? ".json" : ".geojson")).then(r => r.json())
+)).then(([fires, trails, wilderness, meta]) => {
+
+  const fireLayer = L.geoJSON(fires, {
+    style: f => ({
+      color: binOf(f.properties.year).color, weight: 1,
+      fillColor: binOf(f.properties.year).color, fillOpacity: 0.42,
+    }),
+    onEachFeature: (f, l) => {
+      const p = f.properties;
+      l.bindPopup(`<b>${p.name} Fire</b><br>
+        <span class="pop-meta">${p.year ?? "Year unknown"} · ${fmt(p.acres)} acres</span>`);
+    },
+  }).addTo(map);
+
+  const wildLayer = L.geoJSON(wilderness, {
+    style: { color: "#1d5c33", weight: 2, dashArray: "6 4", fill: false },
+    interactive: false,
+  }).addTo(map);
+
+  const trailLayer = L.geoJSON(trails, {
+    style: { color: "#1a1a1a", weight: 1.75, opacity: 0.9 },
+    onEachFeature: (f, l) => {
+      const p = f.properties;
+      const name = (p.trail_name || "Unnamed trail").replace(/\w\S*/g, t => t[0] + t.slice(1).toLowerCase());
+      l.bindPopup(`<b>${name}</b><br>
+        <span class="pop-meta">Trail ${p.trail_no ?? "—"} · ${p.gis_miles ? p.gis_miles.toFixed(1) + " mi (segment)" : ""}</span>`);
+      l.on("mouseover", () => l.setStyle({ weight: 4 }));
+      l.on("mouseout", () => l.setStyle({ weight: 1.75 }));
+    },
+  }).addTo(map);
+
+  L.control.layers(null, {
+    "Burn areas": fireLayer, "Trails": trailLayer, "Wilderness boundary": wildLayer,
+  }, { collapsed: true }).addTo(map);
+
+  const legend = L.control({ position: "bottomright" });
+  legend.onAdd = () => {
+    const d = L.DomUtil.create("div", "legend");
+    d.innerHTML = `<div class="t">Burned area, by decade</div>` +
+      BINS.map(b => `<div class="row"><span class="sw" style="background:${b.color}"></span>${b.label}</div>`).join("") +
+      `<div class="row" style="margin-top:6px"><span class="ln"></span>USFS trail</div>
+       <div class="row"><span class="wl"></span>Wilderness boundary</div>`;
+    return d;
+  };
+  legend.addTo(map);
+
+  map.fitBounds(wildLayer.getBounds().pad(0.05));
+  document.getElementById("updated").textContent =
+    "Fire perimeters as of " + meta.fetched_utc.slice(0, 10) + " (auto-refreshed monthly)";
+}).catch(e => {
+  document.getElementById("updated").textContent = "Failed to load map data: " + e;
+});
+</script>
+</body>
+</html>
