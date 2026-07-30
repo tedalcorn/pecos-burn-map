@@ -27,6 +27,9 @@ TRAILS_URL = "https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_TrailNFSPublis
 FIRE_HISTORY_URL = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/InterAgencyFirePerimeterHistory_All_Years_View/FeatureServer/0/query"
 # History layer lags (stops ~2021); this WFIGS layer covers 2021-present incl. year-to-date
 FIRE_2021PLUS_URL = "https://services3.arcgis.com/T4QMspbfLg3qTGWY/arcgis/rest/services/WFIGS_Interagency_Perimeters/FeatureServer/0/query"
+# MTBS (fires >=1,000 ac, severity-mapped) catches gaps in NIFC — e.g. Medio 2020
+MTBS_URL = "https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_MTBS_01/MapServer/63/query"
+TRAILHEADS_URL = "https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_InfraRecreationSites_01/MapServer/0/query"
 
 # Degrees of margin around the wilderness bbox so approach trails
 # (Winsor, Panchuela, Jacks Creek, Iron Gate) are included.
@@ -117,14 +120,25 @@ def main():
         "outSR": 4326,
     }
 
-    log("2/4 USFS trails")
+    log("2/6 USFS trailheads")
+    ths = query_all(TRAILHEADS_URL, dict(geo_params,
+        where="SITE_SUBTYPE='TRAILHEAD'",
+        outFields="public_site_name",
+    ))
+    # keep only trailheads near the wilderness itself, not the whole bbox
+    ths = [f for f in ths if shape(f["geometry"]).distance(geom) < 0.04]
+    for f in ths:
+        f["properties"] = {"name": (f["properties"].get("public_site_name") or "Trailhead").strip()}
+    write_geojson("trailheads", ths)
+
+    log("3/6 USFS trails")
     trails = query_all(TRAILS_URL, dict(geo_params,
         where="1=1",
         outFields="TRAIL_NAME,TRAIL_NO,TRAIL_TYPE,GIS_MILES,TRAIL_SURFACE",
     ))
     write_geojson("trails", simplify_features(trails, tol=0.0001))
 
-    log("3/4 Fire perimeter history (all years)")
+    log("4/6 Fire perimeter history (all years)")
     hist = query_all(FIRE_HISTORY_URL, dict(geo_params,
         where="1=1",
         outFields="INCIDENT,FIRE_YEAR,GIS_ACRES,MAP_METHOD",
@@ -143,7 +157,7 @@ def main():
             "src": "history",
         }
 
-    log("4/4 Fire perimeters 2021-present (WFIGS)")
+    log("5/6 Fire perimeters 2021-present (WFIGS)")
     recent = query_all(FIRE_2021PLUS_URL, dict(geo_params,
         where="1=1",
         outFields="poly_IncidentName,poly_GISAcres,attr_FireDiscoveryDateTime",
@@ -162,7 +176,37 @@ def main():
     seen = {(f["properties"]["name"], f["properties"]["year"]) for f in hist}
     ytd = [f for f in recent if (f["properties"]["name"], f["properties"]["year"]) not in seen]
 
-    fires = simplify_features(hist + ytd)
+    log("6/6 MTBS burned areas (gap-fill)")
+    mtbs = query_all(MTBS_URL, dict(geo_params,
+        where="1=1",
+        outFields="fire_name,year,acres",
+    ))
+    for f in mtbs:
+        p = f["properties"]
+        f["properties"] = {
+            "name": (p.get("fire_name") or "Unknown").title(),
+            "year": p.get("year"),
+            "acres": round(p["acres"]) if p.get("acres") else None,
+            "src": "mtbs",
+        }
+    # Keep an MTBS perimeter only if NIFC doesn't already have that fire:
+    # no same-name+year match, and <50% of its area covered by same-year perimeters.
+    existing = hist + ytd
+    seen = {(f["properties"]["name"], f["properties"]["year"]) for f in existing}
+    gap_fill = []
+    for f in mtbs:
+        key = (f["properties"]["name"], f["properties"]["year"])
+        if key in seen:
+            continue
+        g = shape(f["geometry"])
+        same_year = [shape(e["geometry"]) for e in existing
+                     if e["properties"]["year"] == f["properties"]["year"]]
+        covered = sum(g.intersection(sy).area for sy in same_year)
+        if covered / g.area < 0.5:
+            gap_fill.append(f)
+            log(f"  MTBS gap-fill: {key[0]} ({key[1]})")
+
+    fires = simplify_features(existing + gap_fill)
     fires.sort(key=lambda f: f["properties"]["year"] or 0)
     write_geojson("fires", fires)
 

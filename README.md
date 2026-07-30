@@ -15,7 +15,9 @@ its data from public APIs so it stays current.
 |---|---|
 | Fire perimeters ≤2021 | NIFC Interagency Fire Perimeter History (ArcGIS REST) |
 | Fire perimeters 2021–present | NIFC WFIGS Interagency Perimeters (includes year-to-date) |
+| Fire perimeters, gap-fill | USFS EDW MTBS burned areas (fires ≥1,000 ac; deduped by name+year & overlap) |
 | Trails | USFS EDW `TrailNFS_Publish` |
+| Trailheads | USFS EDW INFRA Recreation Sites (`SITE_SUBTYPE='TRAILHEAD'`, near-wilderness only) |
 | Wilderness boundary | USFS EDW Wilderness |
 
 The AOI is the Pecos Wilderness bounding box + 0.06° margin (captures approach
@@ -29,6 +31,9 @@ of each month and commits any changes; GitHub Pages serves `docs/`.
 - Perimeters ≠ burn severity: within a perimeter, severity is a mosaic
   (MTBS severity rasters would be the upgrade path).
 - The NIFC history layer lags a year or two; the WFIGS layer fills 2021+.
+- Map UI: sidebar trail index (click to highlight all segments), trailhead
+  flags with hover labels, cabin marker (`CABIN` const in `docs/index.html`),
+  hand-maintained closure notes in `TH_NOTES` (prune when expired).
 - Closures are NOT on the map — check
   [SFNF alerts](https://www.fs.usda.gov/r03/santafe/alerts) before hiking
   (linked from the map header).
