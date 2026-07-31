@@ -233,6 +233,14 @@ def main():
         if (r_n >= MIN_REVIEWS_FOR_RATING and p_n >= MIN_REVIEWS_FOR_RATING
                 and p_rating - r_rating >= RATING_DROP_FLAG):
             flags.append("rating_drop")
+        # A startpoint match only says "this route begins near this trail" — at a
+        # trailhead where several trails converge it attaches routes that never
+        # touch the trail. Never warn on startpoint-only evidence; the stats still
+        # publish so the weakness is visible rather than silently dropped.
+        n_strong = sum(1 for v in matches.values() if v.get(no, "startpoint") != "startpoint")
+        n_start = sum(1 for v in matches.values() if v.get(no) == "startpoint")
+        if not n_strong:
+            flags = []
         # annual series (2010+; earlier is trace volume) for the info card;
         # current year gets [n_ytd, rating, estimated_total] from YTD pace
         years = {}
@@ -264,6 +272,7 @@ def main():
                         "rating": round(sum(b["rating_sum"] for b in r6) / rated6, 2) if rated6 else None,
                         "tags": {t: c for t, c in sorted(tags6.items(), key=lambda x: -x[1]) if c > 0}},
             "n_routes": sum(1 for v in matches.values() if no in v),
+            "n_routes_strong": n_strong, "n_routes_startpoint": n_start,
         }
 
     out["wilderness_avg_rating"] = round(all_ratings[0] / all_ratings[1], 2) if all_ratings[1] else None

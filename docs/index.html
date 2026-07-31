@@ -77,7 +77,7 @@
   .legend { padding: 10px 12px; font-size: 12px; color: var(--ink-2); max-width: 200px; }
   .legend .t { font-weight: 650; color: var(--ink); margin-bottom: 4px; }
   .legend .row { display: flex; align-items: center; gap: 7px; }
-  .legend .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; opacity: 0.75; }
+  .legend .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; }
   .legend .ln { width: 14px; height: 0; border-top: 2.5px dashed #d02090; flex: none; }
   .legend .wl { width: 14px; height: 0; border-top: 2px dashed #1d5c33; flex: none; }
   .leaflet-tooltip { font: 12px system-ui, sans-serif; }
@@ -99,12 +99,13 @@
   <div id="map"></div>
 </div>
 <script>
+// op = fill opacity; older scars fade back so recent burns read first.
 const BINS = [
-  { max: 1989, label: "Before 1990", color: "#f29c6b" },
-  { max: 1999, label: "1990s",       color: "#ea7440" },
-  { max: 2009, label: "2000s",       color: "#d1511d" },
-  { max: 2019, label: "2010s",       color: "#9c3810" },
-  { max: 9999, label: "2020s",       color: "#66230a" },
+  { max: 1989, label: "Before 1990", color: "#f29c6b", op: 0.13 },
+  { max: 1999, label: "1990s",       color: "#ea7440", op: 0.19 },
+  { max: 2009, label: "2000s",       color: "#d1511d", op: 0.26 },
+  { max: 2019, label: "2010s",       color: "#9c3810", op: 0.38 },
+  { max: 9999, label: "2020s",       color: "#66230a", op: 0.50 },
 ];
 const binOf = y => BINS.find(b => (y ?? 0) <= b.max);
 
@@ -166,18 +167,52 @@ Promise.all([
   const flagsOf = no => ((cond[no] || {}).flags || []).map(f => FLAG_LABELS[f] || f);
 
   const fireLayer = L.geoJSON(fires, {
-    style: f => ({
-      color: binOf(f.properties.year).color, weight: 1,
-      fillColor: binOf(f.properties.year).color, fillOpacity: 0.42,
-    }),
-    onEachFeature: (f, l) => {
-      const p = f.properties;
-      const fkey = encodeURIComponent(`${p.name}|${p.year}`);
-      l.bindPopup(`<b>${p.name} Fire</b><br>
-        <span style="color:var(--ink-2)">${p.year ?? "Year unknown"} · ${fmt(p.acres)} acres</span><br>
-        <a href="burns.html?hl=${fkey}" style="color:var(--ink-2);font-size:11px">→ Burns table</a>`);
+    style: f => {
+      const b = binOf(f.properties.year);
+      return {                       // hairline edge, just enough to separate overlapping scars
+        color: b.color, weight: 0.6, opacity: Math.min(1, b.op + 0.35),
+        fillColor: b.color, fillOpacity: b.op,
+      };
     },
   }).addTo(map);
+
+  // Fire popups are driven from a map-level hit test, not per-layer clicks: the
+  // trails canvas pane sits above the fire polygons and swallows every DOM click
+  // before it reaches them, so bindPopup alone never fires.
+  const fireHTML = p => {
+    const fkey = encodeURIComponent(`${p.name}|${p.year}`);
+    return `<b>${p.name} Fire</b><br>
+      <span style="color:var(--ink-2)">${p.year ?? "Year unknown"} · ${fmt(p.acres)} acres</span><br>
+      <a href="burns.html?hl=${fkey}" style="color:var(--ink-2);font-size:11px">→ Burns table</a>`;
+  };
+  const ringHas = (ring, x, y) => {     // ray cast, [lng,lat] ring
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const [xi, yi] = ring[i], [xj, yj] = ring[j];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) inside = !inside;
+    }
+    return inside;
+  };
+  const polyHas = (poly, x, y) =>       // [outer, ...holes]
+    ringHas(poly[0], x, y) && !poly.slice(1).some(h => ringHas(h, x, y));
+  const firesAt = (lng, lat) => fires.features.filter(f => {
+    const g = f.geometry;
+    return g.type === "Polygon" ? polyHas(g.coordinates, lng, lat)
+         : g.type === "MultiPolygon" ? g.coordinates.some(p => polyHas(p, lng, lat)) : false;
+  });
+
+  let segClicked = false;               // set by clickSeg; trails win over fires
+  const firePopup = L.popup({ maxWidth: 240 });
+  map.on("click", e => {
+    if (segClicked) { segClicked = false; return; }
+    const hits = firesAt(e.latlng.lng, e.latlng.lat)
+      .sort((a, b) => (b.properties.year ?? 0) - (a.properties.year ?? 0));
+    if (!hits.length) return;
+    // Overlapping scars are the interesting case (reburns) — list them all, newest first.
+    firePopup.setLatLng(e.latlng)
+      .setContent(hits.map(f => fireHTML(f.properties)).join(`<hr style="border:none;border-top:1px solid #e6e4de;margin:6px 0">`))
+      .openOn(map);
+  });
 
   const wildLayer = L.geoJSON(wilderness, {
     style: { color: "#1d5c33", weight: 1.25, opacity: 0.5, dashArray: "6 4", fill: false },
@@ -198,12 +233,12 @@ Promise.all([
 
   const flat = g => g.type === "LineString" ? [g.coordinates] : g.coordinates;
 
-  map.createPane("trails");
-  map.getPane("trails").style.zIndex = 450;   // above fire polygons (400), below markers (600)
-  const trailRenderer = L.canvas({ tolerance: 8, pane: "trails" });   // fat click target
+  map.createPane("vectors");
+  map.getPane("vectors").style.zIndex = 450;   // trails above fire fills; fire clicks are map-level hit tests
+  const vecRenderer = L.canvas({ tolerance: 8, pane: "vectors" });
   const trailLayer = L.geoJSON(trails, {
-    renderer: trailRenderer,
-    pane: "trails",
+    renderer: vecRenderer,
+    pane: "vectors",
     style: baseStyle,
     onEachFeature: (f, l) => {
       const p = f.properties;
@@ -262,6 +297,7 @@ Promise.all([
   }
 
   function clickSeg(i) {
+    segClicked = true;          // suppress the fire popup for this same click
     const pos = chain.findIndex(c => c.i === i);
     if (pos >= 0) {
       // click a selected END segment to pop it off; middle clicks do nothing
@@ -547,7 +583,8 @@ Promise.all([
   legend.onAdd = () => {
     const d = L.DomUtil.create("div", "legend panel");
     d.innerHTML = `<div class="t">Burned area, by decade</div>` +
-      BINS.map(b => `<div class="row"><span class="sw" style="background:${b.color}"></span>${b.label}</div>`).join("") +
+      // swatch opacity tracks the map's fade, lifted 0.35 so the oldest chip stays visible
+      BINS.map(b => `<div class="row"><span class="sw" style="background:${b.color};opacity:${(0.35 + b.op).toFixed(2)}"></span>${b.label}</div>`).join("") +
       `<div class="row" style="margin-top:6px"><span class="ln"></span>USFS trail</div>`;
     return d;
   };
@@ -558,8 +595,9 @@ Promise.all([
     fireLayer.eachLayer(l => {
       const p = l.feature.properties;
       if (`${p.name}|${p.year}` === deepFire) {
-        map.fitBounds(l.getBounds().pad(0.4));
-        setTimeout(() => l.openPopup(), 300);
+        const b = l.getBounds();
+        map.fitBounds(b.pad(0.4));
+        setTimeout(() => firePopup.setLatLng(b.getCenter()).setContent(fireHTML(p)).openOn(map), 300);
       }
     });
   }
