@@ -60,17 +60,69 @@ def init_db():
     return con
 
 
-def launch_chrome():
+LANDING = "https://www.alltrails.com/trail/us/new-mexico/lake-katherine-via-winsor-trail"
+PROBE_TRAIL = 10030667          # Lake Katherine — used to confirm the API answers
+WARMUPS = (25, 45, 75, 120)     # per-attempt Cloudflare settle time, seconds
+
+
+def kill_chrome():
     subprocess.run(["pkill", "-f", f"remote-debugging-port={PORT}"], capture_output=True)
-    time.sleep(1)
+    time.sleep(2)
+
+
+def launch_chrome(warmup):
+    kill_chrome()
     subprocess.Popen([
         CHROME, f"--remote-debugging-port={PORT}", f"--user-data-dir={PROFILE}",
         "--no-first-run", "--window-size=1200,850", "--window-position=2000,100",
-        "https://www.alltrails.com/trail/us/new-mexico/lake-katherine-via-winsor-trail",
+        LANDING,
     ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    # let the page (and any Cloudflare challenge) settle before attaching CDP —
-    # attaching earlier trips Cloudflare's automation detection
-    time.sleep(20)
+    # Chrome must load the page UNATTACHED so the Cloudflare challenge solves
+    # itself; attaching CDP too early trips its automation detection.
+    time.sleep(warmup)
+
+
+def connect(p):
+    """Launch Chrome and attach, retrying with longer warmups until AllTrails'
+    API actually answers. Unattended (launchd) runs are slower to clear the
+    challenge than interactive ones — a single fixed wait fails intermittently,
+    which is exactly how the 2026-08-02 run died."""
+    last = ""
+    for attempt, warmup in enumerate(WARMUPS, 1):
+        log(f"Chrome attempt {attempt}/{len(WARMUPS)} (warmup {warmup}s)")
+        launch_chrome(warmup)
+        try:
+            b = p.chromium.connect_over_cdp(f"http://localhost:{PORT}", timeout=60000)
+            pg = b.contexts[0].pages[0]
+            # Probe the API we actually depend on — a far better readiness test
+            # than page length, which passes on Cloudflare's own error page.
+            for extra in (0, 20, 30):
+                if extra:
+                    log(f"  not ready; waiting {extra}s more")
+                    time.sleep(extra)
+                    try:
+                        pg.reload(timeout=60000)
+                        time.sleep(6)
+                    except Exception:
+                        pass
+                r = pg.evaluate(
+                    """async (u) => {
+                        try {
+                            const r = await fetch(u, {headers: {'accept':'application/json'}});
+                            return {status: r.status, len: (await r.text()).length};
+                        } catch (e) { return {status: -1, len: 0, err: String(e)}; }
+                    }""",
+                    f"/api/alltrails/v2/trails/{PROBE_TRAIL}?key={KEY}")
+                if r.get("status") == 200 and r.get("len", 0) > 500:
+                    log(f"  API reachable (probe {r['len']} bytes) — proceeding")
+                    return b, pg
+                last = f"probe status={r.get('status')} len={r.get('len')}"
+            b.close()
+        except Exception as e:
+            last = repr(e)[:160]
+            log(f"  attach failed: {last}")
+        kill_chrome()
+    sys.exit(f"Cloudflare never cleared after {len(WARMUPS)} attempts — last: {last}")
 
 
 class AT:
@@ -170,14 +222,8 @@ def main():
     con = init_db()
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
-    log("launching Chrome (Cloudflare warmup)...")
-    launch_chrome()
-
     with sync_playwright() as p:
-        b = p.chromium.connect_over_cdp(f"http://localhost:{PORT}")
-        pg = b.contexts[0].pages[0]
-        if "alltrails" not in pg.url or len(pg.content()) < 10000:
-            sys.exit("Cloudflare challenge did not clear — page is blocked; try again")
+        b, pg = connect(p)
         at = AT(pg)
 
         trails = discover_trails(at)
